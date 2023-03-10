@@ -27,7 +27,7 @@ const ProductSchema = new mongoose.Schema({
         color: [],
         models: [],
         madein: ""
-    }},
+    }}
 
 });
 
