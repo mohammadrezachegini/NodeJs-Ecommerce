@@ -1,0 +1,7 @@
+const Controller = require("../contollers");
+
+module.exports = new class HomeController extends Controller {
+    indexPage(req,res,next) {
+        return res.status(200).send("Index Page")
+    }
+}
