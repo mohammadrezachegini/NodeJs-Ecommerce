@@ -6,5 +6,5 @@ const PaymentSchema = new mongoose.Schema({
 });
 
 module.exports = {
-    PaymentModel: PaymentSchema
+    PaymentModel: mongoose.model("payment", PaymentSchema)
 }
