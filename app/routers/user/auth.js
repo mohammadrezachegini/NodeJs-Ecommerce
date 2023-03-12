@@ -36,7 +36,7 @@ const router = require("express").Router()
 */
 
 
-router.post("/login", UserAuthController.login)
+router.post("/login", UserAuthController.getOtp)
 
 module.exports = {
     userAuthRoutes: router
