@@ -1,4 +1,4 @@
-const { authSchema } = require("../../validations/user/auth.schema");
+// const { authSchema } = require("../../validations/user/auth.schema");
 const Controller = require("../contollers");
 const createError = require("http-errors")
 module.exports = new class HomeController extends Controller {

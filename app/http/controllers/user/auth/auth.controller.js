@@ -1,14 +1,14 @@
 const createError = require("http-errors")
 const { EXPIRES_IN, USER_ROLE } = require("../../../../../utils/constans")
-const { randomNumberGenerator } = require("../../../../../utils/function")
+const { randomNumberGenerator, SignAccessToken } = require("../../../../../utils/function")
 const { UserModel } = require("../../../../models/users")
-const { authSchema } = require("../../../validations/user/auth.schema")
+const { getOtpSchema,checkOtpSchema } = require("../../../validations/user/auth.schema")
 const Controller = require("../../contollers")
 class UserAuthController extends Controller {
 
     async getOtp(req,res,next){
         try {
-            await authSchema.validateAsync(req.body)
+            await getOtpSchema.validateAsync(req.body)
             const {mobile} = req.body
             const code = randomNumberGenerator()
             console.log(`Code is ${code}`);
@@ -23,7 +23,27 @@ class UserAuthController extends Controller {
                 }
             })  
         } catch (error) {
-            next(createError.BadRequest(error.message))
+            next(error)
+        }
+    }
+
+    async checkOtp(req,res,next){
+        try {
+            await checkOtpSchema.validateAsync(req.body)
+            const {mobile,code} = req.body
+            const user = await UserModel.findOne({mobile})
+            if(!user) throw createError.Unauthorized("user not found")
+            if(user.otp.code != code) throw createError.Unauthorized("the code sent is not correct")
+            const now = Date.now()
+            if(+user.otp.expiresIn < now ) throw createError.Unauthorized("your code is expired")
+            const accessToken = await SignAccessToken(user._id)
+            return res.json({
+                data: {
+                    accessToken
+                }
+            })
+        } catch (error) {
+            next(error)
         }
     }
 
