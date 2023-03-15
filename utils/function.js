@@ -13,7 +13,7 @@ function SignAccessToken(userId){
         const user = await  UserModel.findById(userId)
         const payload = {
             mobile: user.mobile,
-            userID: user._id
+            // userID: user._id
         };
         const secret = ACCESS_TOKEN_SECRET_KEY;
         const options = {
@@ -27,6 +27,8 @@ function SignAccessToken(userId){
     })
 
 }
+
+
 
 module.exports = {
     randomNumberGenerator,
