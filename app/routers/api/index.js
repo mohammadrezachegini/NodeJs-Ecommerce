@@ -17,6 +17,10 @@ const router = require("express").Router();
  *      summary: index of routes
  *      tags: [IndexPage]
  *      description :  get all data that need for index page
+ *      parameters:
+ *          -   in: header
+ *              name: access-token
+ *              example: Bearer your token
  *      responses:
  *          200:
  *              description : success
