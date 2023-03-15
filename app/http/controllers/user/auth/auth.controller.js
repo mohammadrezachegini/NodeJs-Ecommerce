@@ -10,18 +10,17 @@ class UserAuthController extends Controller {
         try {
             await getOtpSchema.validateAsync(req.body);
             const { mobile } = req.body;
-            const code = RandomNumberGenerator()
+            const code = randomNumberGenerator()
+            console.log(`The code is ${code}`);
             const result = await this.saveUser(mobile, code)
             if (!result) throw createError.Unauthorized("Login Failed")
-            return res.status(HttpStatus.OK).send({
+            return res.status(200).send({
               data: {
-                statusCode: HttpStatus.OK,
-                data: {
+               
                   message: "The code sent successfully",
                   code,
                   mobile
                 }
-              }
             });
           } catch (error) {
             next(error);
@@ -30,20 +29,19 @@ class UserAuthController extends Controller {
 
     async checkOtp(req,res,next){
         try {
-            await chackOtpSchema.validateAsync(req.body)
+            await checkOtpSchema.validateAsync(req.body)
             const { mobile, code } = req.body;
-            const user = await UserModel.findOne({ mobile }, { password: 0, refreshToken: 0, accessToken: 0}).populate([{path: "Courses"}])
+            const user = await UserModel.findOne({ mobile }, { password: 0, accessToken: 0})
             if (!user) throw createError.NotFound("Username not found")
             if (user.otp.code != code) throw createError.Unauthorized("The code that you sent is incorrect");
             const now = (new Date()).getTime();
             if (+user.otp.expiresIn < now) throw createError.Unauthorized("Your code is expired");
             const accessToken = await SignAccessToken(user._id)
-            const refreshToken = await SignRefreshToken(user._id);
-            return res.status(HttpStatus.OK).json({
-              statusCode : HttpStatus.OK,
+            // const refreshToken = await SignRefreshToken(user._id);
+            return res.status(200).json({
+              statusCode : 200,
               data: {
                 accessToken,
-                refreshToken,
                 user
               }
             })
@@ -56,17 +54,19 @@ class UserAuthController extends Controller {
         const now = (new Date().getTime())
         let otp = {
         code,
-        expiresIn: now  + 120000,
+        expiresIn: EXPIRES_IN
         }
+        const user = await this.checkExistUser(mobile);
+
         if (user){
-            console.log(user.otp, now);
+            console.log(otp.code, now);
             if (+otp.expiresIn > now) throw createError.Forbidden("Your code is not expired")
             return (await this.updateUser(mobile, { otp }))
         }
         return (await UserModel.create({
         mobile,
         otp,
-        Role: ROLES.USER
+        Role: USER_ROLE
         }))
     }
 
@@ -75,16 +75,14 @@ class UserAuthController extends Controller {
         return !!user
     }
 
-    async updateUser(mobile,objectData = {}) {
-        Object.keys(objectData).forEach(ley => {
-            if([""," ", null, undefined, "0", NaN].includes(objectData[key])) delete objectData[key]
+    async updateUser(mobile, objectData = {}) {
+        Object.keys(objectData).forEach(key => {
+          if (["", " ", 0, null, undefined, "0", NaN].includes(objectData[key])) delete objectData[key]
         })
-        const updateResult = await UserModel.updateOne({mobile}, {$set : objectData})
+        const updateResult = await UserModel.updateOne({ mobile }, { $set: objectData })
         return !!updateResult.modifiedCount
+      }
     }
-
-
-}
 
 module.exports = {
     UserAuthController: new UserAuthController()

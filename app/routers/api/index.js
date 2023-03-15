@@ -1,5 +1,5 @@
 const HomeController = require("../../http/controllers/api/home.contollers");
-
+const {VerifyAccessToken} = require("../../http/middleware/VerifyAccessToken")
 const router = require("express").Router();
 
 
@@ -24,7 +24,7 @@ const router = require("express").Router();
  *              description: Not found
 */
 
-router.get("/", HomeController.indexPage)
+router.get("/", VerifyAccessToken, HomeController.indexPage)
 
 module.exports = {
     HomeRoutes : router

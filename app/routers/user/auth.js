@@ -1,4 +1,5 @@
 const {authController, UserAuthController} = require("../../http/controllers/user/auth/auth.controller")
+const { VerifyAccessToken } = require("../../http/middleware/VerifyAccessToken")
 
 const router = require("express").Router()
 
@@ -68,7 +69,7 @@ router.post("/get-otp", UserAuthController.getOtp)
  *                  description: internal Server Error
 */
 
-router.post("/check-otp", UserAuthController.checkOtp)
+router.post("/check-otp",UserAuthController.checkOtp)
 
 module.exports = {
     userAuthRoutes: router
