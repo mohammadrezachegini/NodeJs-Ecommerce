@@ -8,59 +8,65 @@ class UserAuthController extends Controller {
 
     async getOtp(req,res,next){
         try {
-            await getOtpSchema.validateAsync(req.body)
-            const {mobile} = req.body
-            const code = randomNumberGenerator()
-            console.log(`Code is ${code}`);
-            const result = await this.saveUser(mobile,code)
-            if(!result) throw createError.Unauthorized("Unsuccessful login")
-            return res.status(200).send({
+            await getOtpSchema.validateAsync(req.body);
+            const { mobile } = req.body;
+            const code = RandomNumberGenerator()
+            const result = await this.saveUser(mobile, code)
+            if (!result) throw createError.Unauthorized("Login Failed")
+            return res.status(HttpStatus.OK).send({
+              data: {
+                statusCode: HttpStatus.OK,
                 data: {
-                    statusCode: 200,
-                    message: "The verification code snet successfully",
-                    code: code,
-                    mobile
+                  message: "The code sent successfully",
+                  code,
+                  mobile
                 }
-            })  
-        } catch (error) {
-            next(error)
-        }
+              }
+            });
+          } catch (error) {
+            next(error);
+          }
     }
 
     async checkOtp(req,res,next){
         try {
-            await checkOtpSchema.validateAsync(req.body)
-            const {mobile,code} = req.body
-            const user = await UserModel.findOne({mobile})
-            if(!user) throw createError.Unauthorized("user not found")
-            if(user.otp.code != code) throw createError.Unauthorized("the code sent is not correct")
-            const now = Date.now()
-            if(+user.otp.expiresIn < now ) throw createError.Unauthorized("your code is expired")
+            await chackOtpSchema.validateAsync(req.body)
+            const { mobile, code } = req.body;
+            const user = await UserModel.findOne({ mobile }, { password: 0, refreshToken: 0, accessToken: 0}).populate([{path: "Courses"}])
+            if (!user) throw createError.NotFound("Username not found")
+            if (user.otp.code != code) throw createError.Unauthorized("The code that you sent is incorrect");
+            const now = (new Date()).getTime();
+            if (+user.otp.expiresIn < now) throw createError.Unauthorized("Your code is expired");
             const accessToken = await SignAccessToken(user._id)
-            return res.json({
-                data: {
-                    accessToken
-                }
+            const refreshToken = await SignRefreshToken(user._id);
+            return res.status(HttpStatus.OK).json({
+              statusCode : HttpStatus.OK,
+              data: {
+                accessToken,
+                refreshToken,
+                user
+              }
             })
-        } catch (error) {
+          } catch (error) {
             next(error)
-        }
+          }
     }
 
     async saveUser(mobile,code){
+        const now = (new Date().getTime())
         let otp = {
-            code,
-            expiresIn: EXPIRES_IN
+        code,
+        expiresIn: now  + 120000,
         }
-        const result = await this.checkExistUser(mobile)
-        if(result) {
-            return await this.updateUser(mobile, {otp})
+        if (user){
+            console.log(user.otp, now);
+            if (+otp.expiresIn > now) throw createError.Forbidden("Your code is not expired")
+            return (await this.updateUser(mobile, { otp }))
         }
-
-        return !!(await UserModel.create({
-            mobile,
-            otp,
-            Roles: [USER_ROLE]
+        return (await UserModel.create({
+        mobile,
+        otp,
+        Role: ROLES.USER
         }))
     }
 

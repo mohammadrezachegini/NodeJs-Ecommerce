@@ -9,7 +9,7 @@ const getOtpSchema = Joi.object({
 const checkOtpSchema = Joi.object({
 
     mobile: Joi.string().length(10).pattern(/^[0-9]+$/).required().error(new Error("Your phone number is invalid")),
-    code: Joi.string().min(10).max(6).error(new Error("the code that you sent is incorrect"))
+    code: Joi.string().min(5).max(10).error(new Error("the code that you sent is incorrect"))
 
 })
 

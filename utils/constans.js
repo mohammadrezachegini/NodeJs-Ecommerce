@@ -1,5 +1,6 @@
 module.exports = {
     EXPIRES_IN: new Date().getTime() + 12000,
     USER_ROLE: "USER",
-    SECRET_KEY : "c94bedeade4525056b3d2ee145e7914f"
+    ACCESS_TOKEN_SECRET_KEY : "973e2f4ad0224fb002146f4726548ebaffe6865f4733e7d7614d5a4d6b6b4b2a",
+    REFRESH_TOKEN_SECRET_KEY: "1ccdd06043d2b2564b8f166dd37edf6fb67a0643e3e29c2f8183bbc225bf8889"
 }
