@@ -35,9 +35,11 @@ class UserAuthController extends Controller {
             if (!user) throw createError.NotFound("Username not found")
             if (user.otp.code != code) throw createError.Unauthorized("The code that you sent is incorrect");
             const now = (new Date()).getTime();
-            if (+user.otp.expiresIn > now) throw createError.Unauthorized("Your code is expired");
+            if (+user.otp.expiresIn <  now) throw createError.Unauthorized("Your code is expired");
             const accessToken = await SignAccessToken(user._id)
             const refreshToken = await SignRefreshToken(user._id);
+            console.log(accessToken);
+            console.log(refreshToken);
             return res.status(200).json({
               statusCode : 200,
               data: {
@@ -55,7 +57,7 @@ class UserAuthController extends Controller {
         const now = (new Date().getTime())
         let otp = {
         code,
-        expiresIn: EXPIRES_IN
+        expiresIn: (new Date().getTime() + 120000)
         }
         const user = await this.checkExistUser(mobile);
 
