@@ -7,7 +7,13 @@ const addCategorySchema = Joi.object({
 
 });
 
+const updateCategorySchema = Joi.object({
+    title: Joi.string().min(3).max(30).error(new Error("Your category is invalid")),
+
+});
+
 
 module.exports = {
-    addCategorySchema
+    addCategorySchema,
+    updateCategorySchema
 }
