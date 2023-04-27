@@ -47,10 +47,19 @@ class CategoryController extends Controller {
 
             const category = await CategoryModel.aggregate([
                 {
-                    $lookup: {
+                    // $lookup: {
+                    //     from: "categories",
+                    //     localField: "_id",
+                    //     foreignField: "parent",
+                    //     as: "children"
+                    // }
+                    $graphLookup: {
                         from: "categories",
-                        localField: "_id",
-                        foreignField: "parent",
+                        startWith: "$$id",
+                        connectFromField: "_id",
+                        connectToField: "parent",
+                        maxDepth:5,
+                        depthField: "depth",
                         as: "children"
                     }
                 },
@@ -59,6 +68,11 @@ class CategoryController extends Controller {
                         __v: 0,
                         "children.__v": 0,
                         "children.parent": 0,
+                    }
+                },
+                {
+                    $match : {
+                        parent: undefined
                     }
                 }
             ])
