@@ -1,5 +1,6 @@
 module.exports = {
     // EXPIRES_IN: new Date().getTime() + 20000,
+    MongoIDPattern: /^[0-9a-fA-F]{24}$/,
     ROLES: {
         ADMIN: "ADMIN",
         USER: "USER",

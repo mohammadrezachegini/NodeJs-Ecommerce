@@ -1,11 +1,11 @@
-const {default: mongoose} = require("mongoose")
+const {default: mongoose} = require('mongoose')
 
-const CategoriesSchema = new mongoose.Schema({
 
-    title: {type: String, required: true}
-
-});
+const Schema = new mongoose.Schema({
+    title: {type: String, required: true},
+    parent:{type: mongoose.Types.ObjectId, default:undefined}
+})
 
 module.exports = {
-    CategoriesModel: mongoose.model("category", CategoriesSchema)
+    CategoryModel: mongoose.model('Category', Schema),
 }

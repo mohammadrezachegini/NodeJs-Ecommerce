@@ -2,6 +2,7 @@ const redisClient = require("../../utils/init_redis");
 const { HomeRoutes }  = require("./api");
 const { userAuthRoutes } = require("./user/auth");
 const {DeveloperRoutes} = require("../routers/developers.routes");
+const { AdminRoutes } = require("./admin/admin.routes");
 const router = require("express").Router();
 
 (async() => {
@@ -13,6 +14,7 @@ const router = require("express").Router();
 router.use("/user", userAuthRoutes)
 router.use("/", HomeRoutes)
 router.use("/developer", DeveloperRoutes)
+router.use("/admin", AdminRoutes)
 
 module.exports = {
     AllRoutes : router

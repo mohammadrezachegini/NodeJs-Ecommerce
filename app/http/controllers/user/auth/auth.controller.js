@@ -3,7 +3,7 @@ const { ROLES } = require("../../../../../utils/constans")
 const { randomNumberGenerator, SignAccessToken, VerifyRefreshToken, SignRefreshToken } = require("../../../../../utils/function")
 const { UserModel } = require("../../../../models/users")
 const { getOtpSchema,checkOtpSchema } = require("../../../validations/user/auth.schema")
-const Controller = require("../../contollers")
+const Controller = require('../../controllers');
 class UserAuthController extends Controller {
 
     async getOtp(req,res,next){

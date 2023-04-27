@@ -1,5 +1,5 @@
 // const { authSchema } = require("../../validations/user/auth.schema");
-const Controller = require("../contollers");
+const Controller = require("../controllers");
 const createError = require("http-errors")
 module.exports = new class HomeController extends Controller {
     indexPage(req,res,next) {
