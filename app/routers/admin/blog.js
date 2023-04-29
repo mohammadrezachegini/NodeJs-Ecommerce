@@ -1,4 +1,6 @@
+const { uploadFile } = require('../../../utils/multer');
 const { AdminBlogController } = require('../../http/controllers/admin/blog.controller');
+const { StringToArray } = require('../../http/middleware/StringToArray');
 
 const router = require('express').Router();
 
@@ -11,11 +13,50 @@ const router = require('express').Router();
  *          tags: [Blog(AdminPanel)] 
  *          description :  get all blogs
  *          responses:
- *              20:
+ *              200:
  *                  description : success
  *             
 */
 router.get("/", AdminBlogController.getAllBlogs)
+
+/**
+ * @swagger
+ *  /admin/blogs/add:
+ *      post:
+ *          tags: [Blog(AdminPanel)] 
+ *          description : add blog
+ *          summary: Create Blog
+ *          consumes:
+ *              - multipart/form-data
+ *              - application/x-www-form-data-urlencoded
+ *          parameters:
+ *              -   in: formData
+ *                  required: true
+ *                  type: string
+ *                  name: title
+ *              -   in: formData
+ *                  required: true
+ *                  type: string
+ *                  name: short_text   
+ *              -   in: formData
+ *                  example: tags1#tags2#tags3#foo#foo_bar || str || undefined
+ *                  type: string
+ *                  name: tags
+ *              -   in: formData
+ *                  required: false
+ *                  type: string
+ *                  name: category   
+ *              -   in: formData
+ *                  required: true
+ *                  type: file
+ *                  name: image    
+ *          responses:
+ *              201:
+ *                  description : success
+ *             
+*/
+router.post("/add", uploadFile.single("image"), StringToArray("tags") , AdminBlogController.createBlog)
+
 module.exports = {
     BlogAdminApiRoutes: router
 }
