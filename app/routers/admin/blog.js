@@ -12,6 +12,13 @@ const router = require('express').Router();
  *          summary: get all Blogs
  *          tags: [Blog(AdminPanel)] 
  *          description :  get all blogs
+ *          parameters:
+ *              -   in: header
+ *                  required: true
+ *                  type: string
+ *                  name: access-token
+ *                  example: Bearer Token ...
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
  *          responses:
  *              200:
  *                  description : success
@@ -30,6 +37,12 @@ router.get("/", AdminBlogController.getAllBlogs)
  *              - multipart/form-data
  *              - application/x-www-form-data-urlencoded
  *          parameters:
+ *              -   in: header
+ *                  required: true
+ *                  type: string
+ *                  name: access-token
+ *                  example: Bearer Token ...
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
  *              -   in: formData
  *                  required: true
  *                  type: string
@@ -37,7 +50,11 @@ router.get("/", AdminBlogController.getAllBlogs)
  *              -   in: formData
  *                  required: true
  *                  type: string
- *                  name: short_text   
+ *                  name: short_text  
+ *              -   in: formData
+ *                  required: true
+ *                  name: text  
+ *                  type: string
  *              -   in: formData
  *                  example: tags1#tags2#tags3#foo#foo_bar || str || undefined
  *                  type: string

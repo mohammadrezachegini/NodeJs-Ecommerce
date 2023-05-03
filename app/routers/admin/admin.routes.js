@@ -1,5 +1,6 @@
 const { CategoryRoutes } = require("../admin/category")
 const { BlogAdminApiRoutes } = require("../admin/blog")
+const {VerifyAccessToken} = require("../../http/middleware/VerifyAccessToken")
 
 const router = require("express").Router()
 
@@ -14,7 +15,7 @@ const router = require("express").Router()
  *          description: crud action for blog
  */
 router.use("/category", CategoryRoutes)
-router.use("/blogs", BlogAdminApiRoutes)
+router.use("/blogs",  VerifyAccessToken ,BlogAdminApiRoutes)
 
 module.exports = {
     AdminRoutes: router

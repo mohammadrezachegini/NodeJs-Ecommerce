@@ -40,8 +40,9 @@ function fileFilter(req, file, cb) {
 }
 
 
+const maxSize = 1 * 1024 * 1024;
 
-const uploadFile = multer({ storage: storage, fileFilter:fileFilter});
+const uploadFile = multer({ storage: storage, fileFilter:fileFilter, limits: { fileSize: maxSize } });
 module.exports = {
     uploadFile
 }

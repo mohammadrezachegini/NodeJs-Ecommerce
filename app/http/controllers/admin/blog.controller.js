@@ -12,10 +12,17 @@ class BlogController extends Controller {
             // return res.json(req.body)
             req.body.image = path.join(blogDataBody.fileUploadPath, blogDataBody.filename)
             req.body.image = req.body.image.replace(/\\/g, "/")
-            const {title,short_text,tags,category} = blogDataBody
+            const author = req.user._id
+            const {title,text,short_text,tags,category} = blogDataBody
             const image = req.body.image
-            const blog = await BlogModel.create({title,short_text,tags,category,image})
-            return res.json({blog})
+            const blog = await BlogModel.create({author,title,text,short_text,tags,category,image})
+            return res.status(201).json({
+                statusCode: 201,
+                message: "success",
+                data: {
+                    blog
+                }
+            })
             
             
         } catch (error) {
@@ -25,6 +32,7 @@ class BlogController extends Controller {
     }
     async getBlogById(req,res,next){
         try {
+
             
         } catch (error) {
             next(error)
@@ -32,11 +40,50 @@ class BlogController extends Controller {
     }
     async getAllBlogs(req,res,next){
         try {
+
+            // const blogs = await BlogModel.find({})
+            const blogs = await BlogModel.aggregate([
+                {
+                    $match :{}
+                },
+                {
+                    $lookup : {
+                        from: "users",
+                        localField: "author",
+                        foreignField: "_id",
+                        as: "author"
+                    }
+                },
+                {
+                    $unwind : "$author"
+                },
+                {
+                    $lookup : {
+                        from: "categories",
+                        localField: "category",
+                        foreignField: "_id",
+                        as: "category"
+                    }
+                },
+                {
+                    $unwind : "$category"
+                },
+                {
+                    $project: {
+                        "author.__v": 0,
+                        "category.__v": 0,
+                        "author.otp": 0,
+                        "author.roles": 0,
+                        "author.discount": 0,
+                        "author.bills": 0,
+                    }
+                }
+            ])
             return res.status(200).json({
                 statusCode: 200,
                 message: "success",
                 data: {
-                    blogs: []
+                    blogs
                 }
             })
         } catch (error) {
