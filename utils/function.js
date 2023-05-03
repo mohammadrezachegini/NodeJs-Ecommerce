@@ -4,6 +4,9 @@ const { reject } = require("bcrypt/promises")
 const { UserModel } = require("../app/models/users")
 const { SECRET_KEY, ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require("./constans")
 const redisClient = require("./init_redis")
+const path = require('path');
+const fs = require('fs');
+
 function randomNumberGenerator() {
     return Math.floor((Math.random() * 90000) + 10000 )
 }
@@ -81,6 +84,10 @@ function VerifyRefreshToken(token){
         })
 }
 
+function deleteFileInPublic(fileAddress){
+    const pathFile = path.join(__dirname,"..","public", fileAddress)
+    fs.unlinkSync(pathFile)
+}
 
 
 
@@ -88,5 +95,6 @@ module.exports = {
     randomNumberGenerator,
     SignAccessToken,
     SignRefreshToken,
-    VerifyRefreshToken
+    VerifyRefreshToken,
+    deleteFileInPublic,
 }
