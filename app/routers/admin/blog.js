@@ -74,6 +74,66 @@ router.get("/", AdminBlogController.getAllBlogs)
 */
 router.post("/add", uploadFile.single("image"), StringToArray("tags") , AdminBlogController.createBlog)
 
+
+
+
+/**
+ * @swagger
+ *  /admin/blogs/{id}:
+ *      get:
+ *          tags: [Blog(AdminPanel)] 
+ *          description : add blog
+ *          summary: Create Blog
+ *          consumes:
+ *              - multipart/form-data
+ *              - application/x-www-form-data-urlencoded
+ *          parameters:
+ *              -   in: header
+ *                  required: true
+ *                  type: string
+ *                  name: access-token
+ *                  example: Bearer Token ...
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
+ *              -   in: path
+ *                  required: true
+ *                  type: string
+ *                  name: id
+ *          responses:
+ *              201:
+ *                  description : success
+ *             
+*/
+router.get("/:id", AdminBlogController.getBlogById)
+
+
+/**
+ * @swagger
+ *  /admin/blogs/{id}:
+ *      delete:
+ *          tags: [Blog(AdminPanel)] 
+ *          description : add blog
+ *          summary: Create Blog
+ *          consumes:
+ *              - multipart/form-data
+ *              - application/x-www-form-data-urlencoded
+ *          parameters:
+ *              -   in: header
+ *                  required: true
+ *                  type: string
+ *                  name: access-token
+ *                  example: Bearer Token ...
+ *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
+ *              -   in: path
+ *                  required: true
+ *                  type: string
+ *                  name: id
+ *          responses:
+ *              201:
+ *                  description : success
+ *             
+*/
+router.delete("/:id", AdminBlogController.deleteBlogById)
+
 module.exports = {
     BlogAdminApiRoutes: router
 }

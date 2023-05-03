@@ -3,6 +3,7 @@ const Controller = require("../controllers")
 const path = require("path")
 const { BlogModel } = require("../../../models/blogs")
 const { deleteFileInPublic } = require("../../../../utils/function")
+const createError = require("http-errors")
 
 class BlogController extends Controller {
     async createBlog(req,res,next){
@@ -33,6 +34,15 @@ class BlogController extends Controller {
     async getBlogById(req,res,next){
         try {
 
+            const {id} = req.params
+            const blog = await this.findBlog({_id: id})
+            return res.status(200).json({
+                statusCode: 200,
+                message: "success",
+                data: {
+                    blog
+                }
+            })
             
         } catch (error) {
             next(error)
@@ -99,6 +109,21 @@ class BlogController extends Controller {
     }
     async deleteBlogById(req,res,next){
         try {
+
+            const {id} = req.params
+            await this.findBlog({_id: id})
+            const result = await BlogModel.deleteOne({_id: id})
+            if(result.deletedCount == 0){
+                throw createError.InternalServerError("Blog not found")
+            }
+            return res.status(200).json({
+                statusCode: 200,
+                message: "success",
+                data: {
+                    result
+                }
+            })
+
             
         } catch (error) {
             next(error)
@@ -110,6 +135,16 @@ class BlogController extends Controller {
         } catch (error) {
             next(error)
         }
+    }
+
+
+    async findBlog(query = {}){
+        const blog = await BlogModel.findOne(query).populate([{path: "category", select: ['title']}, {path: "user", select: ['mobile', 'first_name', 'last_name']}])
+        if(!blog){
+            throw createError(404, "Blog not found")
+        }
+        delete blog.category.children
+        return blog
     }
 
 }
