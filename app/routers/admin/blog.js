@@ -33,7 +33,7 @@ const router = require('express').Router();
  *                  description: Enter the tags
  *              category:
  *                  type: string
- *                  description: Enter the category's id
+ *                  description: Enter the category
  *              image:
  *                  type: file
  *                  description: upload the image
@@ -51,7 +51,6 @@ const router = require('express').Router();
  *          summary: get all Blogs
  *          tags: [Blog(AdminPanel)] 
  *          description :  get all blogs
- *          parameters:
  *          responses:
  *              200:
  *                  description : success
@@ -74,7 +73,7 @@ router.get("/", AdminBlogController.getAllBlogs)
  *                          $ref: '#/components/schemas/Blog'
  *                  application/x-www-form-urlencoded:
  *                      schema:
- *                          $ref: '#/components/schemas/Blog' 
+ *                          $ref: '#/components/schemas/Blog'
  *          responses:
  *              201:
  *                  description : success

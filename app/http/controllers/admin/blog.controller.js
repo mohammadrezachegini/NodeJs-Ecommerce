@@ -35,7 +35,7 @@ class BlogController extends Controller {
         try {
 
             const {id} = req.params
-            const blog = await this.findBlog({_id: id})
+            const blog = await this.findBlog(id)
             return res.status(200).json({
                 statusCode: 200,
                 message: "success",
@@ -111,7 +111,7 @@ class BlogController extends Controller {
         try {
 
             const {id} = req.params
-            await this.findBlog({_id: id})
+            await this.findBlog(id)
             const result = await BlogModel.deleteOne({_id: id})
             if(result.deletedCount == 0){
                 throw createError.InternalServerError("Blog not found")
@@ -132,7 +132,7 @@ class BlogController extends Controller {
     async updateBlogById(req,res,next){
         try {
             const {id} = req.params
-            await this.findBlog({_id: id})
+            await this.findBlog(id)
             if(req?.body?.fileUploadPath, req?.body?.filename){
                 req.body.image = path.join(req.body.fileUploadPath, req.body.filename)
                 req.body.image = req.body.image.replace(/\\/g, "/")             
@@ -167,11 +167,9 @@ class BlogController extends Controller {
     }
 
 
-    async findBlog(query = {}){
-        const blog = await BlogModel.findOne(query).populate([{path: "category", select: ['title']}, {path: "user", select: ['mobile', 'first_name', 'last_name']}])
-        if(!blog){
-            throw createError(404, "Blog not found")
-        }
+    async findBlog(id) {
+        const blog = await BlogModel.findById(id).populate([{path : "category", select : ['title']}, {path: "author", select : ['mobile', 'first_name', 'last_name', 'username']}]);
+        if(!blog) throw createError.NotFound("Blog not found");
         delete blog.category.children
         return blog
     }
