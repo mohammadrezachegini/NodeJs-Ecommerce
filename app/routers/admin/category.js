@@ -2,6 +2,22 @@ const router = require("express").Router();
 const {CategoryController} = require("../../http/controllers/admin/category.controller");
 
 
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *         CreateCategory:
+ *           type: object
+ *           required:
+ *              -  title
+ *           properties:
+ *              title:
+ *                  type: string
+ *                  description: Enter the category title
+ *              parent:
+ *                  type: string
+ *                  description: Enter the parent category
+ */
 
 
 
@@ -12,19 +28,16 @@ const {CategoryController} = require("../../http/controllers/admin/category.cont
  *          summary: Add Category
  *          tags: [Category(AdminPanel)] 
  *          description :  add Category
- *          parameters:
- *              -   in: header
- *                  type: string
- *                  name: access-token
- *                  example: Bearer Token ...
- *              -   in: formData
- *                  required: true
- *                  type: string
- *                  name: title
- *              -   in: formData
- *                  required: false
- *                  type: string
- *                  name: parent    
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CreateCategory'
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CreateCategory'
+ *   
  *          responses:
  *              201:
  *                  description : success

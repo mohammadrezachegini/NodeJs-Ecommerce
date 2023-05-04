@@ -3,6 +3,42 @@ const { VerifyAccessToken } = require("../../http/middleware/VerifyAccessToken")
 
 const router = require("express").Router()
 
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *         GetOtp:
+ *           type: object
+ *           required:
+ *              -  mobile
+ *           properties:
+ *              mobile:
+ *                  type: string
+ *                  description: CA phone number for sign in and sign up
+ *         CheckOtp:
+ *          type: object
+ *          required:
+ *              -   mobile
+ *              -   code
+ *          properties:
+ *             mobile:
+ *              type: string
+ *              description: CA phone number for sign in and sign up
+ *             code:
+ *              type: string
+ *              description: received code for get OTP
+ *         RefreshToken:
+ *          type: object
+ *          required:
+ *              -   refreshToken
+ *          properties:
+ *             refreshToken:
+ *              type: string
+ *              description: enter old token to get new refresh token and refresh token
+ */
+
+
+
 
 /**  
  * @swagger
@@ -14,17 +50,21 @@ const router = require("express").Router()
 
 /**
  * @swagger
- *  /user/get-otp:
+ *  /user/get-otp: 
  *      post:
  *          summary: get the otp codes
  *          tags: [User-Authentication] 
  *          description :  get the otp code for authentication
- *          parameters:
- *          -   name: mobile
- *              description: CA phone number
- *              in: formData
+ *          requestBody:
  *              required: true
- *              type: string         
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetOtp'
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetOtp'
+ * 
  *          responses:
  *              201:
  *                  description : success
@@ -47,17 +87,16 @@ router.post("/get-otp", UserAuthController.getOtp)
  *          summary: check the otp code
  *          tags: [User-Authentication] 
  *          description :  check the otp code for authentication
- *          parameters:
- *          -   name: mobile
- *              description: CA phone number
- *              in: formData
+ *          requestBody:
  *              required: true
- *              type: string
- *          -   name: code
- *              description: Enter the otp code
- *              in: formData
- *              required: true
- *              type: string         
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CheckOtp'
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CheckOtp'
+ *        
  *          responses:
  *              201:
  *                  description : success
@@ -79,11 +118,16 @@ router.post("/check-otp",UserAuthController.checkOtp)
  *          summary: send refresh token to get new token and refresh token
  *          tags: [User-Authentication] 
  *          description :  Refresh Token
- *          parameters:
- *              -   in: body
- *                  required: true
- *                  type: string
- *                  name: refreshToken    
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/RefreshToken'
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/RefreshToken'
+ *         
  *          responses:
  *              200:
  *                  description : success
