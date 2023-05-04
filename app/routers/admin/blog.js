@@ -7,17 +7,51 @@ const router = require('express').Router();
 
 /**
  * @swagger
+ *  components:
+ *      schemas:
+ *         Blog:
+ *           type: object
+ *           required:
+ *              -  title
+ *              -  short_text
+ *              -  text
+ *              -  tags
+ *              -  category
+ *              -  image
+ *           properties:
+ *              title:
+ *                  type: string
+ *                  description: Enter the blog title
+ *              short_text:
+ *                  type: string
+ *                  description: Enter the short text
+ *              text:
+ *                  type: string
+ *                  description: Enter the text
+ *              tags:
+ *                  type: string
+ *                  description: Enter the tags
+ *              category:
+ *                  type: string
+ *                  description: Enter the category's id
+ *              image:
+ *                  type: file
+ *                  description: upload the image
+ */
+
+
+
+
+
+
+/**
+ * @swagger
  *  /admin/blogs:
  *      get:
  *          summary: get all Blogs
  *          tags: [Blog(AdminPanel)] 
  *          description :  get all blogs
  *          parameters:
- *              -   in: header
- *                  required: true
- *                  type: string
- *                  name: access-token
- *                  example: Bearer Token ...
  *          responses:
  *              200:
  *                  description : success
@@ -32,39 +66,15 @@ router.get("/", AdminBlogController.getAllBlogs)
  *          tags: [Blog(AdminPanel)] 
  *          description : add blog
  *          summary: Create Blog
- *          consumes:
- *              - multipart/form-data
- *              - application/x-www-form-data-urlencoded
- *          parameters:
- *              -   in: header
- *                  required: true
- *                  type: string
- *                  name: access-token
- *                  example: Bearer Token ...
- *              -   in: formData
- *                  required: true
- *                  type: string
- *                  name: title
- *              -   in: formData
- *                  required: true
- *                  type: string
- *                  name: short_text  
- *              -   in: formData
- *                  required: true
- *                  name: text  
- *                  type: string
- *              -   in: formData
- *                  example: tags1#tags2#tags3#foo#foo_bar || str || undefined
- *                  type: string
- *                  name: tags
- *              -   in: formData
- *                  required: false
- *                  type: string
- *                  name: category   
- *              -   in: formData
- *                  required: true
- *                  type: file
- *                  name: image    
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Blog'
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Blog' 
  *          responses:
  *              201:
  *                  description : success
@@ -83,11 +93,6 @@ router.post("/add", uploadFile.single("image"), StringToArray("tags") , AdminBlo
  *              - multipart/form-data
  *              - application/x-www-form-data-urlencoded
  *          parameters:
- *              -   in: header
- *                  type: string
- *                  name: access-token
- *                  example: Bearer Token ...
- *                  required: true
  *              -   in: formData
  *                  type: string
  *                  name: title
@@ -131,11 +136,6 @@ router.patch("/update/:id", uploadFile.single("image"), StringToArray("tags") , 
  *              - multipart/form-data
  *              - application/x-www-form-data-urlencoded
  *          parameters:
- *              -   in: header
- *                  required: true
- *                  type: string
- *                  name: access-token
- *                  example: Bearer Token ...
  *              -   in: path
  *                  required: true
  *                  type: string
@@ -159,11 +159,6 @@ router.get("/:id", AdminBlogController.getBlogById)
  *              - multipart/form-data
  *              - application/x-www-form-data-urlencoded
  *          parameters:
- *              -   in: header
- *                  required: true
- *                  type: string
- *                  name: access-token
- *                  example: Bearer Token ...
  *              -   in: path
  *                  required: true
  *                  type: string
