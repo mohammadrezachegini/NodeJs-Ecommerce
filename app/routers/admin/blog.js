@@ -87,6 +87,7 @@ router.post("/add", uploadFile.single("image"), StringToArray("tags") , AdminBlo
  *                  type: string
  *                  name: access-token
  *                  example: Bearer Token ...
+ *                  required: true
  *              -   in: formData
  *                  type: string
  *                  name: title
