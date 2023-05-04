@@ -131,8 +131,37 @@ class BlogController extends Controller {
     }
     async updateBlogById(req,res,next){
         try {
+            const {id} = req.params
+            await this.findBlog({_id: id})
+            if(req?.body?.fileUploadPath, req?.body?.filename){
+                req.body.image = path.join(req.body.fileUploadPath, req.body.filename)
+                req.body.image = req.body.image.replace(/\\/g, "/")             
+    
+            }
+            let nullishData = ["", " ", "0", 0, null, undefined]
+            let blackListData = ["bookmarks","dislikes", "likes", "comments","author"]
+            const data = req.body;
+            Object.keys(data).forEach(key => {
+                if(blackListData.includes(key)) delete data[key]
+                if(typeof data[key] == "string") data[key] = data[key].trim()
+                if(Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map(item => item.trim())
+                if(nullishData.includes(data[key])) delete data[key]
+                
+            })
+           
+            const updateResult = await BlogModel.updateOne({_id:id}, {$set: data})
+            if(updateResult.modifiedCount == 0) throw createError.InternalServerError("update failed")
+            return res.status(201).json({
+                statusCode: 201,
+                message: "success",
+                data: {
+                    updateResult
+                }
+            })
+            
             
         } catch (error) {
+            deleteFileInPublic(req?.body?.image)
             next(error)
         }
     }

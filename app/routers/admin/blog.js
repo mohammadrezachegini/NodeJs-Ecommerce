@@ -18,7 +18,6 @@ const router = require('express').Router();
  *                  type: string
  *                  name: access-token
  *                  example: Bearer Token ...
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
  *          responses:
  *              200:
  *                  description : success
@@ -42,7 +41,6 @@ router.get("/", AdminBlogController.getAllBlogs)
  *                  type: string
  *                  name: access-token
  *                  example: Bearer Token ...
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
  *              -   in: formData
  *                  required: true
  *                  type: string
@@ -74,6 +72,50 @@ router.get("/", AdminBlogController.getAllBlogs)
 */
 router.post("/add", uploadFile.single("image"), StringToArray("tags") , AdminBlogController.createBlog)
 
+/**
+ * @swagger
+ *  /admin/blogs/update/{id}:
+ *      patch:
+ *          tags: [Blog(AdminPanel)] 
+ *          description : add blog
+ *          summary: Create Blog
+ *          consumes:
+ *              - multipart/form-data
+ *              - application/x-www-form-data-urlencoded
+ *          parameters:
+ *              -   in: header
+ *                  type: string
+ *                  name: access-token
+ *                  example: Bearer Token ...
+ *              -   in: formData
+ *                  type: string
+ *                  name: title
+ *              -   in: path
+ *                  type: string
+ *                  name: id
+ *                  required: true
+ *              -   in: formData
+ *                  type: string
+ *                  name: short_text  
+ *              -   in: formData
+ *                  name: text  
+ *                  type: string
+ *              -   in: formData
+ *                  example: tags1#tags2#tags3#foo#foo_bar || str || undefined
+ *                  type: string
+ *                  name: tags
+ *              -   in: formData
+ *                  type: string
+ *                  name: category   
+ *              -   in: formData
+ *                  type: file
+ *                  name: image    
+ *          responses:
+ *              201:
+ *                  description : success
+ *             
+*/
+router.patch("/update/:id", uploadFile.single("image"), StringToArray("tags") , AdminBlogController.updateBlogById)
 
 
 
@@ -93,7 +135,6 @@ router.post("/add", uploadFile.single("image"), StringToArray("tags") , AdminBlo
  *                  type: string
  *                  name: access-token
  *                  example: Bearer Token ...
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
  *              -   in: path
  *                  required: true
  *                  type: string
@@ -122,7 +163,6 @@ router.get("/:id", AdminBlogController.getBlogById)
  *                  type: string
  *                  name: access-token
  *                  example: Bearer Token ...
- *                  value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIyMzY4NjUzODcyIiwiaWF0IjoxNjgzMTMwOTIxLCJleHAiOjE2ODMxMzQ1MjF9.RPL7ZukoupFTmamtENh1283xlt7pjviHwKJZkPemydI
  *              -   in: path
  *                  required: true
  *                  type: string
@@ -133,6 +173,8 @@ router.get("/:id", AdminBlogController.getBlogById)
  *             
 */
 router.delete("/:id", AdminBlogController.deleteBlogById)
+
+
 
 module.exports = {
     BlogAdminApiRoutes: router
