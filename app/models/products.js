@@ -1,5 +1,5 @@
 const {default: mongoose} = require("mongoose")
-
+const {CommentSchema} = require("./public.schema")
 const ProductSchema = new mongoose.Schema({
 
     title : {type: String, required: true},
@@ -8,7 +8,7 @@ const ProductSchema = new mongoose.Schema({
     images : {type: [String], required: true},
     tags : {type: [String], required: true},
     category : {type: mongoose.Types.ObjectId, required: true},
-    comments : {type: [], default: []},
+    comments : {type: [CommentSchema], default: []},
     like : {type: [mongoose.type.ObjectId], default: []},
     dislike : {type:  [mongoose.type.ObjectId], default: []},
     bookmark : {type:  [mongoose.type.ObjectId], default: []},

@@ -1,12 +1,6 @@
 const {default: mongoose} = require("mongoose")
+const {CommentSchema} = require("./public.schema")
 
-
-const CommentSchema = new mongoose.Schema({
-    user: {type: mongoose.Types.ObjectId, ref:"users", required: true},
-    comment: {type: String, required: true},
-    createdAt: {type: Date, default: new Date().getTime()},
-    parent: {type: mongoose.Types.ObjectId}
-})
 
 const BlogSchema = new mongoose.Schema({
 
@@ -17,7 +11,7 @@ const BlogSchema = new mongoose.Schema({
     image : {type: String, required: true},
     tags : {type: [String], default: []},
     category : {type: mongoose.Types.ObjectId,ref: "Category", required: true},
-    comments : {type: [], default: []},
+    comments : {type: [CommentSchema], default: []},
     likes : {type:[mongoose.Types.ObjectId], ref: "user", default: []},
     dislikes : {type:[mongoose.Types.ObjectId], ref: "user", default: []},
     bookmarks : {type:[mongoose.Types.ObjectId],ref: "user",  default: []}
