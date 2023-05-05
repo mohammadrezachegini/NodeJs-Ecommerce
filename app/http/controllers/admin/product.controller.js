@@ -1,18 +1,16 @@
 const Controller = require("../controllers");
 const {createProductSchema} = require("../../validations/admin/product.schema");
-const { deleteFileInPublic } = require("../../../../utils/function");
+const { deleteFileInPublic, ListOfImagesFromRequest } = require("../../../../utils/function");
 const { ProductModel } = require("../../../models/products");
 const path = require("path");
 class ProductController extends Controller {
     
     async addProduct(req, res, next) {
         try {
+            const images = ListOfImagesFromRequest(req?.files || [], req.body.fileUploadPath);
             const productBody = await createProductSchema.validateAsync(req.body);
-            req.body.image = path.join(productBody.fileUploadPath, productBody.filename)
-            req.body.image = req.body.image.replace(/\\/g, "/")
             const instructor = req.user._id
             const {title,text,short_text,tags,category,price,count,discount,width,height,weight, length} = productBody
-            const image = req.body.image 
             let features = {}, type = "physical"
             if(width || height || weight || length){
                 if(!width) features.width = 0
@@ -27,7 +25,7 @@ class ProductController extends Controller {
             else{
                 type = "digital"
             }
-            const product = await ProductModel.create({title,text,short_text,tags,category,price,count,discount,image,features,instructor,type})
+            const product = await ProductModel.create({title,text,short_text,tags,category,price,count,discount,images,features,instructor,type})
             return res.status(201).json({
                 status: 201,
                 message: "Product Added Successfully",

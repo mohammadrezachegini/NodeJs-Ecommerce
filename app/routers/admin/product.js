@@ -51,21 +51,24 @@ const router = require("express").Router();
  *                  description: count of the product
  *              weight:
  *                  type: string
- *                  description: count of the product
+ *                  description: weight of the product
  *              height:
  *                  type: string
- *                  description: count of the product
+ *                  description: height of the product
  *              length:
  *                  type: string
- *                  description: count of the product
+ *                  description: length of the product
  * 
  *              width:
  *                  type: string
- *                  description: count of the product
+ *                  description: width of the product
  * 
- *              image:
- *                  type: file
- *                  description: title of the product
+ *              images:
+ *                  type: array
+ *                  items:
+ *                      type: string
+ *                      format: binary
+ *                  description: pictures of the product
  * 
  */
 /**
@@ -86,7 +89,7 @@ const router = require("express").Router();
  *                
  * 
  */
-router.post("/add", uploadFile.single("image") ,ProductController.addProduct)
+router.post("/add", uploadFile.array("images", 10) ,ProductController.addProduct)
 
 /**
  * @swagger
@@ -100,7 +103,7 @@ router.post("/add", uploadFile.single("image") ,ProductController.addProduct)
  *                
  * 
  */
-router.get("/list", uploadFile.single("image") ,ProductController.addProduct)
+router.get("/list",ProductController.getAllProducts)
 
 // router.patch()
 // router.delete()
