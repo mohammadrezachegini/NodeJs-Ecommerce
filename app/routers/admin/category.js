@@ -204,5 +204,5 @@ router.patch("/update/:id", CategoryController.editCategory )
 
 
 module.exports = {
-    CategoryRoutes: router
+    CategoryAdminApiRoutes: router
 }
