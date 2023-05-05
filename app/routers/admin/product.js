@@ -105,6 +105,45 @@ router.post("/add", uploadFile.array("images", 10) ,ProductController.addProduct
  */
 router.get("/list",ProductController.getAllProducts)
 
+/**
+ * @swagger
+ *  /admin/products/{id}:
+ *      get:
+ *          tags: [Product(AdminPanel)]
+ *          summary: get one product
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  description: id of the product
+ *          responses:
+ *              201:
+ *                  description : success
+ *                
+ * 
+ */
+router.get("/:id",ProductController.getProductById)
+
+
+
+/**
+ * @swagger
+ *  /admin/products/remove/{id}:
+ *      delete:
+ *          tags: [Product(AdminPanel)]
+ *          summary: delete one product
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  description: id of the product
+ *          responses:
+ *              201:
+ *                  description : success
+ *                
+ * 
+ */
+router.delete("/remove/:id",ProductController.removeProductById)
 // router.patch()
 // router.delete()
 // router.get()
