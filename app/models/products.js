@@ -3,8 +3,8 @@ const {CommentSchema} = require("./public.schema")
 const ProductSchema = new mongoose.Schema({
 
     title : {type: String, required: true},
-    short_dec : {type: String, required: true},
-    full_desc : {type: String, required: true},
+    short_text : {type: String, required: true},
+    text : {type: String, required: true},
     images : {type: [String], required: true},
     tags : {type: [String], required: true},
     category : {type: mongoose.Types.ObjectId, required: true},
@@ -24,13 +24,13 @@ const ProductSchema = new mongoose.Schema({
         height: "",
         width: "",
         weight:"",
-        color: [],
+        colors: [],
         models: [],
         madein: ""
     }}
 
 });
-ProductSchema.index({title: "text", short_text: "text", text: "text",
+ProductSchema.index({title: "text", short_text: "text", text: "text"})
 module.exports = {
     ProductModel: mongoose.model("product", ProductSchema)
 }
