@@ -1,5 +1,6 @@
 const { uploadFile } = require("../../../utils/multer");
 const { ProductController } = require("../../http/controllers/admin/product.controller");
+const { StringToArray } = require("../../http/middleware/StringToArray");
 
 const router = require("express").Router();
 
@@ -183,7 +184,7 @@ const router = require("express").Router();
  *                
  * 
  */
-router.post("/add", uploadFile.array("images", 10) ,ProductController.addProduct)
+router.post("/add", uploadFile.array("images", 10), StringToArray("tags","colors") ,ProductController.addProduct)
 
 /**
  * @swagger
