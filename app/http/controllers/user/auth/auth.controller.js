@@ -4,6 +4,8 @@ const { randomNumberGenerator, SignAccessToken, VerifyRefreshToken, SignRefreshT
 const { UserModel } = require("../../../../models/users")
 const { getOtpSchema,checkOtpSchema } = require("../../../validations/user/auth.schema")
 const Controller = require('../../controllers');
+const {StatusCodes:HttpStatus} = require("http-status-codes")
+
 class UserAuthController extends Controller {
 
     async getOtp(req,res,next){
@@ -14,7 +16,7 @@ class UserAuthController extends Controller {
             console.log(`The code is ${code}`);
             const result = await this.saveUser(mobile, code)
             if (!result) throw createError.Unauthorized("Login Failed")
-            return res.status(200).send({
+            return res.status(HttpStatus.OK).send({
               data: {
                
                   message: "The code sent successfully",
@@ -40,8 +42,8 @@ class UserAuthController extends Controller {
             const refreshToken = await SignRefreshToken(user._id);
             console.log(accessToken);
             console.log(refreshToken);
-            return res.status(200).json({
-              statusCode : 200,
+            return res.status(HttpStatus.OK).json({
+              statusCode : HttpStatus.OK,
               data: {
                 accessToken,
                 refreshToken,

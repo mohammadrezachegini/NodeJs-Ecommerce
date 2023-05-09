@@ -3,6 +3,8 @@ const createError = require("http-errors");
 const Controller = require('../controllers');
 const { addCategorySchema, updateCategorySchema } = require('../../validations/admin/category.schema');
 const  {mongoose}  = require('mongoose');
+const {StatusCodes:HttpStatus} = require("http-status-codes")
+
 class CategoryController extends Controller {
  
     async addCategory(req, res,next) {
@@ -11,9 +13,9 @@ class CategoryController extends Controller {
             const {title, parent} = req.body;
             const Category = await CategoryModel.create({title, parent});
             if(!Category) throw createError.InternalServerError("Internal Server Error")
-            return res.status(201).json({
+            return res.status(HttpStatus.CREATED).json({
                 data:{
-                    statusCode:201,
+                    statusCode:HttpStatus.CREATED,
                     message:"Category Created Successfully",
                     Category
                 }
@@ -78,9 +80,9 @@ class CategoryController extends Controller {
             //     }
             // ])
             const category = await CategoryModel.find({parent: undefined})
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data:{
-                    statusCode:200,
+                    statusCode:HttpStatus.OK,
                     message:"All Categories",
                     category
                 }
@@ -117,9 +119,9 @@ class CategoryController extends Controller {
                 },
                 
             ])
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data:{
-                    statusCode:200,
+                    statusCode:HttpStatus.OK,
                     message:"Category By Id",
                     category
                 }
@@ -132,9 +134,9 @@ class CategoryController extends Controller {
     async getAllCategoriesByParent(req, res,next) {
         try {
             const parent = await CategoryModel.find({parent: undefined},{__v:0})
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data:{
-                    statusCode:200,
+                    statusCode:HttpStatus.OK,
                     message:"All Categories",
                     parent
                 }
@@ -147,9 +149,9 @@ class CategoryController extends Controller {
         try {
             const {parent} = req.params;
             const children = await CategoryModel.find({parent},{__v:0, parent:0})
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data:{
-                    statusCode:200,
+                    statusCode:HttpStatus.OK,
                     message:"All Child Categories",
                     children
                 }
@@ -171,9 +173,9 @@ class CategoryController extends Controller {
             ]
             });
             if(deleteResult.deletedCount == 0) throw createError.InternalServerError("Unsuccessful Delete category")
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data:{
-                    statusCode:200,
+                    statusCode:HttpStatus.OK,
                     message:"Category Deleted Successfully"
                 }
             })
@@ -190,9 +192,9 @@ class CategoryController extends Controller {
                     $match:{}
                 }
             ]);
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data:{
-                    statusCode:200,
+                    statusCode:HttpStatus.OK,
                     message:"All Categories without populate",
                     categories
                 }
@@ -214,9 +216,9 @@ class CategoryController extends Controller {
             if (updateResult.modifiedCount === 0) {
                 throw createError.BadRequest("Failed to update category. Category may not exist.");
             }
-            return res.status(201).json({
+            return res.status(HttpStatus.CREATED).json({
                 data: {
-                    statusCode: 201,
+                    statusCode: HttpStatus.CREATED,
                     message: "Category updated successfully",
                 },
             });

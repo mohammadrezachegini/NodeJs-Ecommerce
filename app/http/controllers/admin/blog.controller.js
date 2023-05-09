@@ -4,7 +4,7 @@ const path = require("path")
 const { BlogModel } = require("../../../models/blogs")
 const { deleteFileInPublic } = require("../../../../utils/function")
 const createError = require("http-errors")
-
+const {StatusCodes:HttpStatus} = require("http-status-codes")
 class BlogController extends Controller {
     async createBlog(req,res,next){
         try {
@@ -17,8 +17,8 @@ class BlogController extends Controller {
             const {title,text,short_text,tags,category} = blogDataBody
             const image = req.body.image
             const blog = await BlogModel.create({author,title,text,short_text,tags,category,image})
-            return res.status(201).json({
-                statusCode: 201,
+            return res.status(HttpStatus.CREATED).json({
+                statusCode: HttpStatus.CREATED,
                 message: "success",
                 data: {
                     blog
@@ -36,8 +36,8 @@ class BlogController extends Controller {
 
             const {id} = req.params
             const blog = await this.findBlog(id)
-            return res.status(200).json({
-                statusCode: 200,
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
                 message: "success",
                 data: {
                     blog
@@ -89,8 +89,8 @@ class BlogController extends Controller {
                     }
                 }
             ])
-            return res.status(200).json({
-                statusCode: 200,
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
                 message: "success",
                 data: {
                     blogs
@@ -116,8 +116,8 @@ class BlogController extends Controller {
             if(result.deletedCount == 0){
                 throw createError.InternalServerError("Blog not found")
             }
-            return res.status(200).json({
-                statusCode: 200,
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
                 message: "success",
                 data: {
                     result
@@ -151,8 +151,8 @@ class BlogController extends Controller {
            
             const updateResult = await BlogModel.updateOne({_id:id}, {$set: data})
             if(updateResult.modifiedCount == 0) throw createError.InternalServerError("update failed")
-            return res.status(201).json({
-                statusCode: 201,
+            return res.status(HttpStatus.CREATED).json({
+                statusCode: HttpStatus.CREATED,
                 message: "success",
                 data: {
                     updateResult

@@ -5,6 +5,8 @@ const { ProductModel } = require("../../../models/products");
 const path = require("path");
 const { ObjectIdValidator } = require("../../validations/public.validator");
 const createHttpError = require("http-errors");
+const {StatusCodes:HttpStatus} = require("http-status-codes")
+
 class ProductController extends Controller {
     
     async addProduct(req, res, next) {
@@ -28,7 +30,7 @@ class ProductController extends Controller {
                 type = "digital"
             }
             const product = await ProductModel.create({title,text,short_text,tags,category,price,count,discount,images,features,instructor,type})
-            return res.status(201).json({
+            return res.status(HttpStatus.CREATED).json({
                 status: 201,
                 message: "Product Added Successfully",
                 data:{
@@ -54,8 +56,8 @@ class ProductController extends Controller {
             const product = await this.findProductById(id)
             const removeProduct = await ProductModel.deleteOne({_id : product._id})
             if(!removeProduct.deletedCount == 0) throw createHttpError.InternalServerError("Product not found")
-            return res.status(200).json({
-                statusCode: 200,
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
                 message: "Product deleted Successfully",
                 data:{
                     product
@@ -70,9 +72,9 @@ class ProductController extends Controller {
         try {
 
             const products = await ProductModel.find({})
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 
-                statusCode: 200,
+                statusCode: HttpStatus.OK,
                 message: "Products fetched Successfully",
                 data:{
                     products
@@ -88,8 +90,8 @@ class ProductController extends Controller {
         try {
             const {id} = req.params
             const product = await this.findProductById(id)
-            return res.status(200).json({
-                statusCode: 200,
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
                 message: "Product fetched Successfully",
                 data:{
                     product
