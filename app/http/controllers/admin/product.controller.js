@@ -70,8 +70,21 @@ class ProductController extends Controller {
     }
     async getAllProducts(req, res, next) {
         try {
+            const search = req?.query?.search
+            let products;
 
-            const products = await ProductModel.find({})
+            if(search){
+                products = await ProductModel.find({
+                    $text: {
+                        $search: new RegExp(search, "ig")
+                    }
+                })
+            }
+            else{
+                products = await ProductModel.find({})
+            }
+
+            // const products = await ProductModel.find({})
             return res.status(HttpStatus.OK).json({
                 
                 statusCode: HttpStatus.OK,

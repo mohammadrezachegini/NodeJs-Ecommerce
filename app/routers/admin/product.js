@@ -97,6 +97,11 @@ router.post("/add", uploadFile.array("images", 10) ,ProductController.addProduct
  *      get:
  *          tags: [Product(AdminPanel)]
  *          summary: get All products
+ *          parameters:
+ *              -   in: query
+ *                  name: search
+ *                  type: string
+ *                  description: search of the product
  *          responses:
  *              201:
  *                  description : success
