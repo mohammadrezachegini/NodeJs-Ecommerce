@@ -9,15 +9,15 @@ const router = require('express').Router();
  * @swagger
  *  components:
  *      schemas:
- *          Type:
- *              type: array
- *              items: 
- *                  type: string
- *                  enum:
- *                      -   Free
- *                      -   Cash
- *                      -   Special
+ *          Types:
+ *             Course:
+ *             type: string
+ *             enum:
+ *                  -   Free
+ *                  -   Cash
+ *                  -   Special
  */ 
+
 /**
  * @swagger
  * components:
@@ -67,7 +67,7 @@ const router = require('express').Router();
  *                  format: binary
  *                  description: pictures of the product
  *              type:
- *                     $ref: '#/components/schemas/Type'
+ *                     $ref: '#/components/schemas/Types'
  *      EditProduct:
  *          type: object
  *          properties:
@@ -123,7 +123,7 @@ const router = require('express').Router();
  *                  description: pictures of the product
  * 
  *              type:
- *                     $ref: '#/components/schemas/Type'
+ *                     $ref: '#/components/schemas/Types'
  *              colors:
  *                     $ref: '#/components/schemas/Color'  
  */
@@ -167,7 +167,7 @@ router.get('/list', CourseController.getAllCourses )
 *                
 * 
 */
-router.post("/add", uploadFile.single("image"), StringToArray("tags") ,CourseController.getAllCourses)
+router.post("/add", uploadFile.single("image"), StringToArray("tags") ,CourseController.addCourse)
 
 module.exports = {
     CourseAdminApiRoutes : router
