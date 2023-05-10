@@ -33,7 +33,7 @@ const CourseSchema = new mongoose.Schema({
     status : {type: String, default: "NotStarted"},
     time : {type: String, default: "00:00:00"},
     instructor : {type:  mongoose.Types.ObjectId,ref: "user",  required: true},
-    chapter: {type:  [ChapterSchema],  default: []},
+    chapters: {type:  [ChapterSchema],  default: []},
     students: {type:  [mongoose.Types.ObjectId],  default: [], ref: "user"},
 
 
