@@ -2,6 +2,8 @@ const Controller = require('../controllers');
 const {CourseModel} = require('../../../models/course');
 const {StatusCodes: HttpStatus} = require('http-status-codes')
 const path = require('path');
+const { createCourseSchema } = require('../../validations/admin/course.schema');
+const createHttpError = require('http-errors');
 class CourseController extends Controller {
     async getAllCourses(req, res, next) {
         try {
@@ -24,13 +26,35 @@ class CourseController extends Controller {
 
     async addCourse(req, res, next) {
         try {
+            await createCourseSchema.validateAsync(req.body);
             const {fileUploadPath, filename} = req.body;
             const image =  path.join(fileUploadPath, filename).replace(/\\/g, "/");
             const {title,short_desc, full_desc, tags, category, price, discount} = req.body;
+            const instructor = req.user._id;
             // const data = req.body;
             // const image =  req.file;
+            const course = await CourseModel.create({
+                title,
+                short_desc, 
+                full_desc, 
+                tags, 
+                category, 
+                price, 
+                discount, 
+                image,
+                time: "00:00:00",
+                status: "NotStarted",
+                instructor
+
+
+            })
+            if(!course?._id) throw createHttpError.InternalServerError('Course not added')
             return res.status(HttpStatus.CREATED).json({
-                title,short_desc, full_desc, tags, category, price, discount, image
+                statusCode:HttpStatus.CREATED,
+                message: 'Course added successfully',
+                data:{
+                    course
+                }
             })
 
 

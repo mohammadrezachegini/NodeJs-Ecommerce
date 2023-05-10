@@ -30,6 +30,7 @@ const CourseSchema = new mongoose.Schema({
     price : {type: Number, default: 0},
     discount : {type: Number, default: 0},
     type : {type: String, required: true, default: "free"},
+    status : {type: String, default: "NotStarted"},
     time : {type: String, default: "00:00:00"},
     instructor : {type:  mongoose.Types.ObjectId,ref: "user",  required: true},
     chapter: {type:  [ChapterSchema],  default: []},
