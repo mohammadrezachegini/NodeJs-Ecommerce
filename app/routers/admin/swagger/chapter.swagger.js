@@ -16,11 +16,36 @@
  *                  type: string
  */
 
-
+/**
+ * @swagger
+ *  definitions:
+ *      chaptersDefinition:
+ *          type: object
+ *          properties:
+ *              statusCode:                 
+ *                  type: integer
+ *                  example: 20X
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      course:
+ *                          type: object
+ *                          properties:
+ *                             _id:
+ *                                  type: string
+ *                             title:
+ *                                  type: string
+ *                             chapters:
+ *                                  type: array
+ *                                  items:
+ *                                     type: object
+ *                                  examples: [{}]
+ *                                  
+ */
 
 /**
  * @swagger
- *  /admin/chapter/add:
+ *  /admin/chapters/add:
  *      put:
  *          tags: [Chapter(AdminPanel)]
  *          summary: add a new chapter
@@ -40,5 +65,26 @@
  *                  application/json:
  *                     schema:
  *                        $ref: '#/definitions/publicDefinition'  
+ * 
+ */
+
+/**
+ * @swagger
+ *  /admin/chapters/list/{id}:
+ *      get:
+ *          tags: [Chapter(AdminPanel)]
+ *          summary: get chapter by id
+ *          parameters:
+ *             -    in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *                  200:
+ *                    description : success
+ *          content:
+ *                  application/json:
+ *                     schema:
+ *                        $ref: '#/definitions/chaptersDefinition'  
  * 
  */
