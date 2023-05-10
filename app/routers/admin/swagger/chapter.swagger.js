@@ -88,3 +88,25 @@
  *                        $ref: '#/definitions/chaptersDefinition'  
  * 
  */
+
+
+/**
+ * @swagger
+ *  /admin/chapters/remove/{id}:
+ *      patch:
+ *          tags: [Chapter(AdminPanel)]
+ *          summary: remove a chapter
+ *          parameters:
+ *             -    in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *                  200:
+ *                    description : success
+ *          content:
+ *                  application/json:
+ *                     schema:
+ *                        $ref: '#/definitions/publicDefinition'  
+ * 
+ */

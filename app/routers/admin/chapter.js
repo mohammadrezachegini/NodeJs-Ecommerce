@@ -4,6 +4,7 @@ const { ChapterController } = require('../../http/controllers/admin/chapter/chap
 
 router.put("/add", ChapterController.addChapter)
 router.get("/list/:id", ChapterController.getChapterById)
+router.patch("/remove/:id", ChapterController.removeChapterById)
 
 
 
