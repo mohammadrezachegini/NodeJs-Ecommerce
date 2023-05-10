@@ -29,10 +29,9 @@ class CourseController extends Controller {
             await createCourseSchema.validateAsync(req.body);
             const {fileUploadPath, filename} = req.body;
             const image =  path.join(fileUploadPath, filename).replace(/\\/g, "/");
-            const {title,short_desc, full_desc, tags, category, price, discount} = req.body;
+            const {title,short_desc, full_desc, tags, category, price, discount,type} = req.body;
             const instructor = req.user._id;
-            // const data = req.body;
-            // const image =  req.file;
+            if(Number(price) > 0 && type === "Free") throw createHttpError.BadRequest("For free courses, price should be 0")
             const course = await CourseModel.create({
                 title,
                 short_desc, 
@@ -41,6 +40,7 @@ class CourseController extends Controller {
                 category, 
                 price, 
                 discount, 
+                type,
                 image,
                 time: "00:00:00",
                 status: "NotStarted",
@@ -60,6 +60,23 @@ class CourseController extends Controller {
 
         } catch (error) {
             next(error);
+        }
+    }
+
+    async getCourseById(req, res, next) {
+        try {
+            const {id} = req.params;
+            const course = await CourseModel.findById(id);
+            if(!course) throw createHttpError.NotFound('Course not found')
+            return res.status(HttpStatus.OK).json({
+                statusCode:HttpStatus.OK,
+                message: 'Course fetched successfully',
+                data:{
+                    course
+                }
+            })
+        } catch (error) {
+            
         }
     }
 }

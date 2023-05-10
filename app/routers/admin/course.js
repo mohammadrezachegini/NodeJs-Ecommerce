@@ -169,6 +169,25 @@ router.get('/list', CourseController.getAllCourses )
 */
 router.post("/add", uploadFile.single("image"), StringToArray("tags") ,CourseController.addCourse)
 
+
+/**
+ * @swagger
+ *  /admin/courses/{id}:
+ *      get:
+ *          tags: [Course(AdminPanel)]
+ *          summary: get All courses
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  description: id for the course
+ *          responses:
+ *              200:
+ *                  description : success
+ *                
+ * 
+ */
+router.get('/:id', CourseController.getCourseById )
 module.exports = {
     CourseAdminApiRoutes : router
 }
