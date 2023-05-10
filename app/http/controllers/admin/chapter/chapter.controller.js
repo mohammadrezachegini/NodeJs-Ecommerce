@@ -62,6 +62,17 @@ class ChapterController extends Controller {
         if(!chapters) throw createHttpError.NotFound('Course not found')
         return chapters
     }
+
+    async getOneChapter(id) {
+
+        try {
+            const chapters = await CourseModel.findOne({"chapters._id": id},{"chapters.$": 1})
+            if(!chapters) throw createHttpError.NotFound('Chapter not found')
+            return chapters
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = {
