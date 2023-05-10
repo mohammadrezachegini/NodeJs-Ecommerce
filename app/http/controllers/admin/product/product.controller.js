@@ -1,9 +1,9 @@
-const Controller = require("../controllers");
-const {createProductSchema} = require("../../validations/admin/product.schema");
-const { deleteFileInPublic, ListOfImagesFromRequest, setFeatures, copyObject, deleteInvalidPropertyInObject } = require("../../../../utils/function");
-const { ProductModel } = require("../../../models/products");
+const Controller = require("../../../controllers/controllers");
+const {createProductSchema} = require("../../../validations/admin/product.schema");
+const { deleteFileInPublic, ListOfImagesFromRequest, setFeatures, copyObject, deleteInvalidPropertyInObject } = require("../../../../../utils/function");
+const { ProductModel } = require("../../../../models/products");
 const path = require("path");
-const { ObjectIdValidator } = require("../../validations/public.validator");
+const { ObjectIdValidator } = require("../../../validations/public.validator");
 const createHttpError = require("http-errors");
 const {StatusCodes:HttpStatus} = require("http-status-codes")
 

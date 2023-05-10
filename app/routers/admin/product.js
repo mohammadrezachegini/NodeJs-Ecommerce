@@ -1,5 +1,5 @@
 const { uploadFile } = require("../../../utils/multer");
-const { ProductController } = require("../../http/controllers/admin/product.controller");
+const { ProductController } = require("../../http/controllers/admin/product/product.controller");
 const { StringToArray } = require("../../http/middleware/StringToArray");
 
 const router = require("express").Router();
