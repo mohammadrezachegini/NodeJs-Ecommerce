@@ -14,6 +14,13 @@
  *                  type: string
  *              text:
  *                  type: string
+ *      EditChapter:
+ *          type: object
+ *          properties:
+ *              title:
+ *                  type: string
+ *              text:
+ *                  type: string
  */
 
 /**
@@ -101,6 +108,37 @@
  *                  name: id
  *                  type: string
  *                  required: true
+ *          responses:
+ *                  200:
+ *                    description : success
+ *          content:
+ *                  application/json:
+ *                     schema:
+ *                        $ref: '#/definitions/publicDefinition'  
+ * 
+ */
+
+
+/**
+ * @swagger
+ *  /admin/chapters/update/{id}:
+ *      patch:
+ *          tags: [Chapter(AdminPanel)]
+ *          summary: update a chapter
+ *          parameters:
+ *             -    in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          requestBody:
+ *                  required: true
+ *                  content: 
+ *                      application/x-www-form-urlencoded:
+ *                          schema:
+ *                              $ref: '#/components/schemas/EditChapter'  
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/EditChapter'  
  *          responses:
  *                  200:
  *                    description : success

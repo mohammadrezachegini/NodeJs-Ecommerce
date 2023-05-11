@@ -5,6 +5,7 @@ const path = require('path');
 const createHttpError = require('http-errors');
 const { default: mongoose } = require('mongoose');
 const {CourseModel} = require('../../../../models/course');
+const { deleteInvalidPropertyInObject } = require('../../../../../utils/function');
 class ChapterController extends Controller {
 
 
@@ -43,7 +44,7 @@ class ChapterController extends Controller {
     async getChapterById(req, res, next) {
         try {
             const {id} = req.params;
-            const course = await this.getChapterOfCourse(id)
+            const course = await this.getChaptersOfCourse(id)
             return res.status(HttpStatus.OK).json({
                 statusCode:HttpStatus.OK,
                 
@@ -59,12 +60,12 @@ class ChapterController extends Controller {
 
     async removeChapterById(req, res, next) {
         try {
-            const {chapterID} = req.params;
-            const chapter = await this.getOneChapter(chapterID)
-            const removeChapterResult = await CourseModel.updateOne({"chapters._id": chapterID}, {
+            const {id} = req.params;
+            const chapter = await this.getOneChapter(id)
+            const removeChapterResult = await CourseModel.updateOne({"chapters._id": id}, {
                 $pull: {
                     chapters: {
-                        _id: chapterID
+                        _id: id
                     }
                 } 
             })
@@ -75,7 +76,6 @@ class ChapterController extends Controller {
                 data:{
                     message: 'Chapter removed successfully',
                     chapter,
-                    removeChapterResult
                 }
             })
 
@@ -84,22 +84,54 @@ class ChapterController extends Controller {
         }
     }
 
-    async getChapterOfCourse(id) {
-        const chapters = await CourseModel.findOne({_id: id},{chapters: 1, title: 1})
-        if(!chapters) throw createHttpError.NotFound('Course not found')
-        return chapters
-    }
-
-    async getOneChapter(id) {
-
+    async updateChapterById(req, res, next) {
         try {
-            const chapters = await CourseModel.findOne({"chapters._id": id},{"chapters.$": 1})
-            if(!chapters) throw createHttpError.NotFound('Chapter not found')
-            return chapters
+
+            const {id} = req.params;
+            console.log("chapter idddddddddd :::::::: " + id)
+            await this.getOneChapter(id)
+            const data = req.body;
+            console.log("data is daataaaaaa :::::::: " + data)
+            deleteInvalidPropertyInObject(data, ["_id"])
+            const updateChapterResult = await CourseModel.updateOne(
+                {"chapters._id" : id}, 
+                {$set : { "chapters.$" : data }}
+            )
+
+            if(updateChapterResult.modifiedCount === 0 ) throw new createHttpError.InternalServerError('updated chapter is not successful')
+            return res.status(HttpStatus.OK).json({
+                statusCode:HttpStatus.OK,
+                data:{
+                    message: 'Chapter updated successfully',
+                    updateChapterResult,
+                    
+                }
+            })
         } catch (error) {
             next(error);
         }
     }
+
+    async getChaptersOfCourse(id){
+        const chapters = await CourseModel.findOne({_id: id}, {chapters: 1, title: 1})
+        if(!chapters) throw createHttpError.NotFound("course not found")
+        return chapters
+    }
+    async getOneChapter(id) {
+        console.log("id :::::::: " + id);
+        const chapter = await CourseModel.findOne(
+          { chapters: { $elemMatch: { _id: id } } }
+        );
+        console.log("chapter :::::::: " + chapter);
+        if (!chapter) {
+          throw new createHttpError.NotFound("Chapter not found");
+        }
+        const chapterData = chapter.chapters.find((chapter) => chapter._id.toString() === id);
+        if (!chapterData) {
+          throw new createHttpError.NotFound("Chapter data not found");
+        }
+        return chapterData;
+      }
 }
 
 module.exports = {
