@@ -26,6 +26,9 @@ const createEpisodeSchema = Joi.object({
     time: Joi.string().regex(/[0-9]{2}\:[0-9]{2}:[0-9]{2}/i).error(createError.BadRequest("Your time is invalid")),
     chapterID: Joi.string().pattern(MongoIDPattern).error(createError.BadRequest("Your chapter id is invalid")),
     courseID: Joi.string().pattern(MongoIDPattern).error(createError.BadRequest("Your course id is invalid")),
+    fileUploadPath: Joi.allow(),
+    filename: Joi.string().pattern(/(\.mp4|\.mkv|\.mov|\.mpg|\.avi)$/).error(createError.BadRequest("Your image is invalid")),
+
 
 });
 

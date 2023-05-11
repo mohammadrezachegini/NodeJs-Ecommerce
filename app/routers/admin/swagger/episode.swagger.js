@@ -9,7 +9,7 @@
  *              -   chapterID
  *              -   title
  *              -   text
- *              -   time
+ *              -   video
  *              -   type
  *          properties:
  *              courseID:
@@ -20,9 +20,10 @@
  *                  type: string
  *              text:
  *                  type: string
- *              type:
+ *              video:
  *                  type: string
- *              time:
+ *                  format: binary
+ *              type:
  *                  type: string
   *                  enum:
  *                     - lock
@@ -50,12 +51,9 @@
  *          requestBody:
  *              required: true
  *              content: 
- *                      application/x-www-form-urlencoded:
+ *                      multipart/form-data:
  *                          schema:
- *                             $ref: '#/components/schemas/AddEpisode'  
- *                      application/json:
- *                          schema:
- *                              $ref: '#/components/schemas/AddEpisode'  
+ *                             $ref: '#/components/schemas/AddEpisode'
  *          responses:
  *                  200:
  *                    description : success

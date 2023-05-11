@@ -45,10 +45,23 @@ function fileFilter(req, file, cb) {
     return cb(createError.BadRequest("Invalid file type!"))
 }
 
+function videoFilter(req, file, cb) {
+    const ext = path.extname(file.originalname);
+
+    const mimTypes = [".mp4", ".mpg", ".mov", ".mkv", ".avi"];
+    if (mimTypes.includes(ext)) {
+        return cb(null, true);
+    }
+    return cb(createError.BadRequest("Invalid video type!"))
+}
 
 const maxSize = 1 * 1024 * 1024;
+const videoMaxSize = 1 * 1024 * 1024;
 
 const uploadFile = multer({ storage: storage, fileFilter:fileFilter, limits: { fileSize: maxSize } });
+const uploadVideo = multer({ storage: storage, videoFilter:videoFilter, limits: { fileSize: videoMaxSize } });
+
 module.exports = {
-    uploadFile
+    uploadFile,
+    uploadVideo
 }
