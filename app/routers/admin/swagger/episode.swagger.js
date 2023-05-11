@@ -55,6 +55,29 @@
  *                          schema:
  *                             $ref: '#/components/schemas/AddEpisode'  
  *          responses:
+ *                  201:
+ *                    description : success
+ *          content:
+ *                  application/json:
+ *                     schema:
+ *                        $ref: '#/definitions/publicDefinition'  
+ * 
+ */
+
+
+
+/**
+ * @swagger
+ *  /admin/episodes/remove/{id}:
+ *      delete:
+ *          tags: [Episode(AdminPanel)]
+ *          summary: remove a  episode
+ *          parameters:
+ *             -    in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          responses:
  *                  200:
  *                    description : success
  *          content:
