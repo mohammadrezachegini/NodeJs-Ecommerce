@@ -19,6 +19,18 @@ const createCourseSchema = Joi.object({
 });
 
 
+const createEpisodeSchema = Joi.object({
+    title: Joi.string().min(3).max(255).error(createError.BadRequest("Your course title is invalid")),
+    text: Joi.string().error(createError.BadRequest("Your text is invalid")),
+    type: Joi.string().regex(/(lock|unlock)/i).error(createError.BadRequest("Your type is invalid")),
+    time: Joi.string().regex(/[0-9]{2}\:[0-9]{2}:[0-9]{2}/i).error(createError.BadRequest("Your time is invalid")),
+    chapterID: Joi.string().pattern(MongoIDPattern).error(createError.BadRequest("Your chapter id is invalid")),
+    courseID: Joi.string().pattern(MongoIDPattern).error(createError.BadRequest("Your course id is invalid")),
+
+});
+
+
 module.exports = {
     createCourseSchema,
+    createEpisodeSchema,
 }
