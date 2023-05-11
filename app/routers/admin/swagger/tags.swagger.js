@@ -3,6 +3,8 @@
  * tags:
  *      -   name: Admin-Panel
  *          description: crud action for admin
+ *      -   name: Episode(AdminPanel)
+ *          description: crud action for Episode 
  *      -   name: Chapter(AdminPanel)
  *          description: crud action for Chapter 
  *      -   name: Course(AdminPanel)
