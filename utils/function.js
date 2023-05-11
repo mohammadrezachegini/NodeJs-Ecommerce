@@ -6,6 +6,8 @@ const { SECRET_KEY, ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = requir
 const redisClient = require("./init_redis")
 const path = require('path');
 const fs = require('fs');
+const { exec } = require('child_process');
+
 
 function randomNumberGenerator() {
     return Math.floor((Math.random() * 90000) + 10000 )
@@ -151,6 +153,20 @@ function getTime(seconds) {
     return (houre + ":" + minutes + ":" +second)
 }
 
+
+function getVideoDuration(videoUrl) {
+    return new Promise((resolve, reject) => {
+      exec(`ffprobe -i ${videoUrl} -show_entries format=duration -v quiet -of csv="p=0"`, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        } else {
+          const duration = parseFloat(stdout);
+          resolve(duration);
+        }
+      });
+    });
+  }
+
 module.exports = {
     randomNumberGenerator,
     SignAccessToken,
@@ -162,4 +178,5 @@ module.exports = {
     setFeatures,
     deleteInvalidPropertyInObject,
     getTime,
+    getVideoDuration,
 }

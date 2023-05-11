@@ -7,6 +7,7 @@ const EpisodeSchema = new mongoose.Schema({
     text: {type: String, required: true},
     type: {type: String, default: "unlock"},
     time: {type: String, required: true},
+    videoAddress: {type: String, required: true},
 })
 
 const ChapterSchema = new mongoose.Schema({

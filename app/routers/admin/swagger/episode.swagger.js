@@ -53,7 +53,7 @@
  *              content: 
  *                      multipart/form-data:
  *                          schema:
- *                             $ref: '#/components/schemas/AddEpisode'
+ *                             $ref: '#/components/schemas/AddEpisode'  
  *          responses:
  *                  200:
  *                    description : success
