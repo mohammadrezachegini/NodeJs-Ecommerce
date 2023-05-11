@@ -7,6 +7,7 @@ class EpisodeController extends Controller {
     async addEpisode(req, res, next) {
         try {
             const {title,time,text, chapterID, courseID} = await createEpisodeSchema.validateAsync(req.body)
+            
         } catch (error) {
             next(error)
         }
