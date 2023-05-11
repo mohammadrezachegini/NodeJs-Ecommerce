@@ -8,6 +8,12 @@ const EpisodeSchema = new mongoose.Schema({
     type: {type: String, default: "unlock"},
     time: {type: String, required: true},
     videoAddress: {type: String, required: true},
+},{
+    toJSON: {virtual: true},
+})
+
+EpisodeSchema.virtual("videoURL").get(function () {
+    return `http://localhost:50000/${this.videoAddress}`
 })
 
 const ChapterSchema = new mongoose.Schema({
@@ -38,9 +44,13 @@ const CourseSchema = new mongoose.Schema({
     students: {type:  [mongoose.Types.ObjectId],  default: [], ref: "user"},
 
 
+},{
+    toJSON: {virtual: true},
 });
 CourseSchema.index({title: "text", short_desc: "text", full_desc: "text"})
-
+CourseSchema.virtual("imageURL").get(function () {
+    return `http://localhost:50000/${this.image}`
+})
 module.exports = {
     CourseModel: mongoose.model("course", CourseSchema)
 }

@@ -36,7 +36,9 @@ BlogSchema.virtual("category_detail", {
     localField : "_id",
     foreignField: "category"
 })
-
+BlogSchema.virtual("imageURL").get(function () {
+    return `http://localhost:50000/${this.image}`
+})
 module.exports = {
     BlogModel: mongoose.model("blog", BlogSchema)
 }

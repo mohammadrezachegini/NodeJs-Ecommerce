@@ -25,7 +25,7 @@
  *                  format: binary
  *              type:
  *                  type: string
-  *                  enum:
+ *                  enum:
  *                     - lock
  *                     - unlock
  *      EditEpisode:
@@ -35,6 +35,14 @@
  *                  type: string
  *              text:
  *                  type: string
+ *              video:
+ *                  type: string
+ *                  format: binary
+ *              type:
+ *                  type: string
+ *                  enum:
+ *                     - lock
+ *                     - unlock
 
  */
 
@@ -79,6 +87,34 @@
  *                  required: true
  *          responses:
  *                  200:
+ *                    description : success
+ *          content:
+ *                  application/json:
+ *                     schema:
+ *                        $ref: '#/definitions/publicDefinition'  
+ * 
+ */
+
+
+/**
+ * @swagger
+ *  /admin/episodes/edit/{id}:
+ *      patch:
+ *          tags: [Episode(AdminPanel)]
+ *          summary: edit a episode
+ *          parameters:
+ *             -    in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          requestBody:
+ *              required: true
+ *              content: 
+ *                      multipart/form-data:
+ *                          schema:
+ *                             $ref: '#/components/schemas/EditEpisode'  
+ *          responses:
+ *                  201:
  *                    description : success
  *          content:
  *                  application/json:
