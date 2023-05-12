@@ -7,7 +7,13 @@ const addRoleSchema = Joi.object({
 });
 
 
+const addPermissionSchema = Joi.object({
+    title: Joi.string().min(3).max(30).error(new Error("Your role is invalid")),
+    description: Joi.string().min(3).max(100).error(new Error("Your description is invalid")),
+});
+
 
 module.exports = {
     addRoleSchema,
+    addPermissionSchema,
 }

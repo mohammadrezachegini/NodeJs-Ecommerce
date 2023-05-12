@@ -5,6 +5,8 @@ const router = require("express").Router();
 
 router.get("/list", RoleController.getAllRoles)
 router.post("/add", StringToArray("permissions") ,RoleController.createRole)
+router.delete("/remove/:field", RoleController.removeRole)
+
 module.exports = {
     RoleAdminApiRoutes : router
 }

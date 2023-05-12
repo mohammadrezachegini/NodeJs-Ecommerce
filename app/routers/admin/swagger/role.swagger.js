@@ -149,13 +149,13 @@
 
 /**
 * @swagger
-*  /admin/roles/remove/{id}:
+*  /admin/roles/remove/{field}:
 *      delete:
 *          tags: [RBAC(AdminPanel)]
-*          summary: Edit Role
+*          summary: Remove Role
 *          parameters:
 *              -    in: path
-*                   name: id
+*                   name: field
 *                   type: string
 *                   required: true
 *          responses:

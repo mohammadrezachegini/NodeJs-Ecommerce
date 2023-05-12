@@ -3,6 +3,7 @@ const {StatusCodes: HttpStatus} = require("http-status-codes")
 const createHttpError = require('http-errors')
 const { addRoleSchema } = require('../../../validations/admin/RBAC.schema')
 const {RoleModel} = require("../../../../models/role")
+const mongoose = require('mongoose')
 class RoleController extends Controller {
 
     async getAllRoles(req,res,next) {
@@ -24,7 +25,7 @@ class RoleController extends Controller {
 
     async createRole(req,res,next) {
         try {
-            await   addRoleSchema.validateAsync(req.body)
+            await  addRoleSchema.validateAsync(req.body)
             const {title,permissions} = req.body
             console.log("PERMISSIONS IS " + permissions);
             console.log("Title IS " + title);
@@ -36,8 +37,8 @@ class RoleController extends Controller {
                 permissions
             })
             if(!createdRole) throw new createHttpError.InternalServerError('Role not created')
-            return res.status(HttpStatus.OK).json({
-                statusCode: HttpStatus.OK,
+            return res.status(HttpStatus.CREATED).json({
+                statusCode: HttpStatus.CREATED,
                 data: {
                     message: 'Role created successfully',
                     createdRole
@@ -46,6 +47,31 @@ class RoleController extends Controller {
         } catch (error) {
             next(error)
         }
+    }
+
+    async removeRole(req,res,next) {
+        try {
+            const {field} = req.params
+            const role = await this.findRoleWithTitleOrId(field)
+            const removeRoleResult = await RoleModel.deleteOne({_id: role._id})
+            if(!removeRoleResult) throw new createHttpError.InternalServerError('Role not removed')
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: 'Role removed successfully',
+                    removeRoleResult
+                }
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    }
+    async findRoleWithTitleOrId(field) {
+        let findQuery = mongoose.isValidObjectId(field)? { _id: field } : { title: field }
+        const role = await RoleModel.findOne(findQuery)
+        if(!role) throw new createHttpError.InternalServerError('Role not found')
+        return role
     }
 }
 
