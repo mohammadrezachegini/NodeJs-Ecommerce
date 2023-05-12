@@ -4,6 +4,7 @@ const createHttpError = require('http-errors')
 const { addRoleSchema } = require('../../../validations/admin/RBAC.schema')
 const {RoleModel} = require("../../../../models/role")
 const mongoose = require('mongoose')
+const { copyObject, deleteInvalidPropertyInObject } = require('../../../../../utils/function')
 class RoleController extends Controller {
 
     async getAllRoles(req,res,next) {
@@ -67,6 +68,31 @@ class RoleController extends Controller {
             next(error)
         }
     }
+
+    async editRoleById(req,res,next) {
+        try {
+            const {id} = req.params
+            const role = await this.findRoleWithTitleOrId(id)
+            const data = copyObject(req.body)
+            deleteInvalidPropertyInObject(data,[])
+            const updateRoleResult = await RoleModel.updateOne({_id: role._id}, {
+                $set: data
+            })
+            if(!updateRoleResult.modifiedCount) throw new createHttpError.InternalServerError('Role not updated')
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: 'Role updated successfully',
+                    updateRoleResult
+                }
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
     async findRoleWithTitleOrId(field) {
         let findQuery = mongoose.isValidObjectId(field)? { _id: field } : { title: field }
         const role = await RoleModel.findOne(findQuery)
