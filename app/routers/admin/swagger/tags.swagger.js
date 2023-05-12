@@ -3,6 +3,8 @@
  * tags:
  *      -   name: Admin-Panel
  *          description: crud action for Admin
+ *      -   name: RBAC(AdminPanel)
+ *          description: Role Based Access Control
  *      -   name: User(AdminPanel)
  *          description: crud action for User 
  *      -   name: Episode(AdminPanel)

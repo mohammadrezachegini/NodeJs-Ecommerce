@@ -1,6 +1,7 @@
 const Controller = require('../../controllers')
 const {UserModel} = require("../../../../models/users")
 const {StatusCodes: HttpStatus} = require('http-status-codes')
+const { deleteInvalidPropertyInObject } = require('../../../../../utils/function')
 class UserController extends Controller {
 
 
@@ -28,10 +29,17 @@ class UserController extends Controller {
         try {
             const userID = req.user._id
             const data = req.body
-            const BlackListFields = ["mobile", "otp", "bills", "discount", "Roles", "Courses"]
+            const BlackListFields = ["mobile", "otp", "bills", "discount", "roles", "courses"]
             deleteInvalidPropertyInObject(data, BlackListFields)
             const profileUpdateResult = await UserModel.updateOne({_id: userID}, { $set: data })
             if(!profileUpdateResult.modifiedCount) throw new createHttpError.InternalServerError("update failed")
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data:{
+                    message: 'Profile updated',
+                    profileUpdateResult
+                }
+            })
         } catch (error) {
             next(error)
         }
