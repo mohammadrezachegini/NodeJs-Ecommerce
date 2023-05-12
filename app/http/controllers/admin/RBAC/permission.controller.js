@@ -3,6 +3,7 @@ const {StatusCodes: HttpStatus} = require("http-status-codes")
 const Controller = require('../../controllers')
 const { addPermissionSchema } = require('../../../validations/admin/RBAC.schema')
 const  createHttpError  = require('http-errors')
+const { copyObject, deleteInvalidPropertyInObject } = require('../../../../../utils/function')
 class PermissionController extends Controller {
 
     async getAllPermissions(req,res,next) {
@@ -63,6 +64,30 @@ class PermissionController extends Controller {
             next(error)
         }
     }  
+
+
+
+    async editPermissionById(req,res,next) {
+        try {
+            const {id} = req.params
+            const data = copyObject(req.body)
+            deleteInvalidPropertyInObject(data,[])
+            const updatePermissionResult = await PermissionsModel.updateOne({_id: id}, {
+                $set: data
+            })
+            if(!updatePermissionResult.modifiedCount) throw new createHttpError.InternalServerError('Permission not updated')
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: 'Permission updated successfully',
+                    updatePermissionResult
+                }
+            })
+
+        } catch (error) {
+            next(error)
+        }
+    }
     
     async findPermissionById(_id) {
         const permission = await PermissionsModel.findById({_id})
