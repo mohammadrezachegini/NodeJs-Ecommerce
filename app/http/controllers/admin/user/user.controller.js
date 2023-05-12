@@ -11,7 +11,7 @@ class UserController extends Controller {
             if(search){
                 databaseQuery["$text"] = { $search: search }
             }
-            const users = await UserModel.find({databaseQuery:})
+            const users = await UserModel.find({databaseQuery})
             return res.status(HttpStatus.OK).json({
                 statusCode: HttpStatus.OK,
                 data:{
