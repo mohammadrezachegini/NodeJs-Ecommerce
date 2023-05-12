@@ -2,7 +2,9 @@
  * @swagger
  * tags:
  *      -   name: Admin-Panel
- *          description: crud action for admin
+ *          description: crud action for Admin
+ *      -   name: User(AdminPanel)
+ *          description: crud action for User 
  *      -   name: Episode(AdminPanel)
  *          description: crud action for Episode 
  *      -   name: Chapter(AdminPanel)
@@ -10,9 +12,9 @@
  *      -   name: Course(AdminPanel)
  *          description: crud action for Course 
  *      -   name: Product(AdminPanel)
- *          description: crud action for product 
+ *          description: crud action for Product 
  *      -   name: Category(AdminPanel)
- *          description: crud action for category 
+ *          description: crud action for Category 
  *      -   name: Blog(AdminPanel)
- *          description: crud action for blog
+ *          description: crud action for Blog
  */
