@@ -2,7 +2,7 @@ const { PermissionsModel } = require('../../../../models/permission')
 const {StatusCodes: HttpStatus} = require("http-status-codes")
 const Controller = require('../../controllers')
 const { addPermissionSchema } = require('../../../validations/admin/RBAC.schema')
-
+const  createHttpError  = require('http-errors')
 class PermissionController extends Controller {
 
     async getAllPermissions(req,res,next) {
@@ -46,7 +46,29 @@ class PermissionController extends Controller {
         }
     }
 
+    async removePermission(req,res,next) {
+        try {
+            const {id} = req.params
+            await this.findPermissionById(id)
+            const removePermissionResult = await PermissionsModel.deleteOne({_id: id})
+            if(!removePermissionResult) throw new createHttpError.InternalServerError('Permission not deleted')
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: 'Permission deleted successfully',
+                    removePermissionResult
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }  
     
+    async findPermissionById(_id) {
+        const permission = await PermissionsModel.findById({_id})
+        if(!permission) throw new createHttpError.NotFound('Permission not found')
+        return permission
+    }
 }
 
 
