@@ -50,10 +50,14 @@
  *           type: object
  *           required:
  *              -  title
+ *              -  description
  *           properties:
  *              title:
  *                  type: string
  *                  description: Enter the title of roles
+ *              description:
+ *                  type: string
+ *                  description: Enter the description of roles
  *              permissions:
  *                  type: array
  *                  description: Enter the permissions
@@ -70,6 +74,9 @@
  *              title:
  *                  type: string
  *                  description: Enter the title of roles
+ *              description:
+ *                  type: string
+ *                  description: Enter the description of roles
  *              permissions:
  *                  type: array
  *                  description: Enter the permissions
