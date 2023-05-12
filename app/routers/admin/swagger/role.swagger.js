@@ -41,18 +41,7 @@
  *                                                  example: "describe the permission"
  *                                          
  */
-/**
- * @swagger
- *  components:
- *      schemas:
- *          Permissions:
- *             Permissions:
- *             type: string
- *             enum:
- *                  -   Blog
- *                  -   Course
- *                  -   Product
- */ 
+
 /**
  * @swagger
  *  components:
@@ -66,7 +55,7 @@
  *                  type: string
  *                  description: Enter the title of roles
  *              permissions:
- *                  $ref: '#/components/schemas/Permissions'
+ *                  type: array
  *                  description: Enter the permissions
  */
 
@@ -82,7 +71,7 @@
  *                  type: string
  *                  description: Enter the title of roles
  *              permissions:
- *                  $ref: '#/components/schemas/Permissions'
+ *                  type: array
  *                  description: Enter the permissions
  */
 /**
