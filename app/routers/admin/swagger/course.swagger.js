@@ -103,24 +103,6 @@
  *              discount:
  *                  type: string
  *                  description: discount of the product
- * 
- *              count:
- *                  type: string
- *                  description: count of the product
- *              weight:
- *                  type: string
- *                  description: weight of the product
- *              height:
- *                  type: string
- *                  description: height of the product
- *              length:
- *                  type: string
- *                  description: length of the product
- * 
- *              width:
- *                  type: string
- *                  description: width of the product
- * 
  *              images:
  *                  type: array
  *                  items:
@@ -130,8 +112,8 @@
  * 
  *              type:
  *                     $ref: '#/components/schemas/Types'
- *              colors:
- *                     $ref: '#/components/schemas/Color'  
+
+ * 
  */
 
 /**
@@ -232,7 +214,6 @@
 *                          schema:
 *                              $ref: '#/definitions/publicDefinition'
 * 
-
 */
 
 
@@ -254,3 +235,31 @@
  * 
  */
 
+
+
+/**
+* @swagger
+*  /admin/courses/edit/{id}:
+*      patch:
+*          tags: [Course(AdminPanel)]
+*          summary: Edit a  course
+*          parameters:
+*               -   in: path
+*                   name: id
+*                   type: string
+*                   description: id for the course
+*          requestBody:
+*              required: true
+*              content:
+*                      multipart/form-data:
+*                          schema:
+*                              $ref: '#/components/schemas/EditCourse'
+*          responses:
+*              201:
+*                  description: created new course
+*                  content:
+*                      application/json:
+*                          schema:
+*                              $ref: '#/definitions/publicDefinition'
+* 
+*/

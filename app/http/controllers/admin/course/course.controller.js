@@ -5,6 +5,7 @@ const path = require('path');
 const { createCourseSchema } = require('../../../validations/admin/course.schema');
 const createHttpError = require('http-errors');
 const { default: mongoose } = require('mongoose');
+const { getTimeOfCourse } = require('../../../../../utils/function');
 class CourseController extends Controller {
     async getAllCourses(req, res, next) {
         try {
@@ -51,7 +52,6 @@ class CourseController extends Controller {
                 discount, 
                 type,
                 image,
-                time: "00:00:00",
                 status: "NotStarted",
                 instructor
 
@@ -90,6 +90,35 @@ class CourseController extends Controller {
     }
 
 
+    async updateCourseById(req, res, next) {
+        try {
+            const {id} = req.params;
+            if(!mongoose.isValidObjectId(id)) throw createHttpError.BadRequest("The course id is invalid");
+            const course = await CourseModel.findById(id);
+            if(!course) throw createHttpError.NotFound("Course not found");
+            let blackListFields = ["time", "chapters", "episodes", "students", "bookmarks", "likes", "dislikes", "comments", "fileUploadPath", "filename"]
+            deleteInvalidPropertyInObject(data, blackListFields)
+            if(req.file){
+                data.image = path.join(fileUploadPath, filename)
+                deleteFileInPublic(course.image)
+            }
+            const updateCourseResult = await CourseModel.updateOne({_id: id}, {
+                $set: data
+            })
+            if(!updateCourseResult.modifiedCount) throw new createHttpError.InternalServerError("Course not updated")
+
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: "Course updated successfully",
+                    updateCourseResult
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+    
     
 }
 
