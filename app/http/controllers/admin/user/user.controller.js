@@ -6,7 +6,12 @@ class UserController extends Controller {
 
     async getAllUsers(req,res,next){
         try {
-            const users = await UserModel.find({})
+            const {search} = req.query
+            const databaseQuery = {}
+            if(search){
+                databaseQuery["$text"] = { $search: search }
+            }
+            const users = await UserModel.find({databaseQuery:})
             return res.status(HttpStatus.OK).json({
                 statusCode: HttpStatus.OK,
                 data:{
