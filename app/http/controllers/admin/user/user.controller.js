@@ -23,6 +23,19 @@ class UserController extends Controller {
             next(error)
         }
     }
+
+    async updateUserProfileById(req,res,next){
+        try {
+            const userID = req.user._id
+            const data = req.body
+            const BlackListFields = ["mobile", "otp", "bills", "discount", "Roles", "Courses"]
+            deleteInvalidPropertyInObject(data, BlackListFields)
+            const profileUpdateResult = await UserModel.updateOne({_id: userID}, { $set: data })
+            if(!profileUpdateResult.modifiedCount) throw new createHttpError.InternalServerError("update failed")
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = {
