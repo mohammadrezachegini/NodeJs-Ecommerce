@@ -96,3 +96,15 @@
  *                          schema: 
  *                              $ref: '#/definitions/publicDefinition'
  */
+
+
+/**
+ * @swagger
+ *  /admin/user/profile:
+ *      get:
+ *          tags: [User(AdminPanel)]
+ *          summary: get user profile
+ *          responses :
+ *              200:
+ *                  description: success
+ */
