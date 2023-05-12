@@ -7,6 +7,8 @@ const { EpisodeAdminApiRoutes } = require("./episode")
 const { UserAdminApiRoutes } = require("./user")
 const { PermissionAdminApiRoutes } = require("./permission")
 const { RoleAdminApiRoutes } = require("./role")
+const { checkPermission } = require("../../http/middleware/permission.guard")
+const { PERMISSIONS } = require("../../../utils/constans")
 
 const router = require("express").Router()
 
@@ -17,9 +19,9 @@ router.use("/products", ProductAdminApiRoutes)
 router.use("/courses", CourseAdminApiRoutes)
 router.use("/chapters", ChapterAdminApiRoutes)
 router.use("/episodes", EpisodeAdminApiRoutes)
-router.use("/users", UserAdminApiRoutes)
+router.use("/users",checkPermission([PERMISSIONS.USER]), UserAdminApiRoutes)
 router.use("/permissions", PermissionAdminApiRoutes)
-router.use("/roles", RoleAdminApiRoutes)
+router.use("/roles",checkPermission([PERMISSIONS.USER]), RoleAdminApiRoutes)
 
 module.exports = {
     AdminRoutes: router
